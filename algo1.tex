@@ -167,25 +167,25 @@ T( n ) \in & \Omega( \log( \frac{n}{3}! ) ) \\
 \end{enumerate}
 
 \section*{Άσκηση 2}
-Χρησιμοποιούμε τον αλγόριθμο \textlatin{heapsort}. Ξεκινώντας με ένα άδειο \textlatin{heap} εισάγουμε όλα τα στοιχεία προσέχοντας να μην εισάγουμε πολλαπλά ταυτόσημα στοιχεία. Αντίθετα, κατά την εισαγωγή ενός στοιχείου που υπάρχει ήδη, αυξάνουμε ένα μετρητή που δείχνει το πλήθος των εμφανίσεών του. Τέλος, εξάγουμε τα στοιχεία σε αύξουσα σειρά εισάγοντας το κατάλληλο πλήθος στον πίνακα που θα επιστρέψουμε. Καθώς το \textlatin{heap} θα περιέχει κάθε στιγμή το πολύ $\lg n$ στοιχεία, οι λειτουργίες εισαγωγής και εξαγωγής θα είναι $O( \lg \lg n )$.
+Χρησιμοποιούμε ένα \textlatin{AVL} δέντρο για να κρατάμε τα στοιχεία μας. Ξεκινώντας με ένα άδειο δέντρο εισάγουμε όλα τα στοιχεία προσέχοντας να μην εισάγουμε πολλαπλά ταυτόσημα στοιχεία. Αντίθετα, κατά την εισαγωγή ενός στοιχείου που υπάρχει ήδη, αυξάνουμε ένα μετρητή που δείχνει το πλήθος των εμφανίσεών του. Τέλος, εξάγουμε τα στοιχεία σε αύξουσα σειρά εισάγοντας το κατάλληλο πλήθος στον πίνακα που θα επιστρέψουμε. Καθώς το δέντρο θα περιέχει κάθε στιγμή το πολύ $\lg n$ στοιχεία, οι λειτουργίες εισαγωγής στοιχείου και εξαγωγής ελαχίστου θα είναι $O( \lg \lg n )$.
 
 \selectlanguage{english}
 \begin{algorithm}[H]
 \caption{\textgreek{Άσκηση 2}}
 \begin{algorithmic}[1]
-\Procedure{FastHeapSort}{$A, N$}
-    \State $h \gets \Call{EmptyMinHeap}$
-    \ForAll{$i \in A$}
-        \State $item \gets \Call{HeapFind}{h, A[ i ]}$
+\Procedure{FastRepeatedSort}{$A, N$}
+    \State $t \gets \Call{EmptyBalancingTree}$
+    \For{$i \gets 1$ to $N$}
+        \State $item \gets \Call{TreeFind}{t, A[ i ]}$
         \If{$item \neq \bot$}
             \State $item.count \gets item.count + 1$
         \Else
-            \State $\Call{HeapInsert}{key: h, count: 1}$
+            \State $\Call{TreeInsert}{t, key: A[ i ], count: 1}$
         \EndIf
     \EndFor
     \State $j \gets 1$
-    \While{$\lnot \Call{Empty}{h}$}
-        \State $item \gets \Call{ExtractMin}{h}$
+    \While{$\lnot \Call{Empty}{t}$}
+        \State $item \gets \Call{ExtractMin}{t}$
         \For{$i \gets 1$ to $item.count$}
             \State $A[ j ] \gets item.key$
             \State $j \gets j + 1$
@@ -251,26 +251,22 @@ T( n ) \in & \Omega( \log( \frac{n}{3}! ) ) \\
 \begin{algorithm}[H]
 \caption{\textgreek{Άσκηση 3(β)}}
 \begin{algorithmic}[1]
-\Require $sorted(A), sorted(B), N_A + N_B \geq k$
-\Procedure{$K^{th}Element_2$}{$A, N_A, B, N_B, k$}
-    \If{$N_A + N_B = k$}
-        \State \Return $\max( A[ N_A - 1 ], B[ N_B - 1 ] )$
+\Require $sorted(A[l_A \dots l_A + k]), sorted(B[l_B \dots l_B + k])$
+\Procedure{$K^{th}Element$}{$A, l_A, B, l_B, k$}
+	\State $m_A \gets l_A + \lfloor \frac{k - 1}{2} \rfloor$
+	\State $m_B \gets l_B + \lfloor \frac{k - 1}{2} \rfloor$
+    \If{$k = 1$}
+        \State \Return $\min( A[ l_A ], B[ l_B ] )$
     \EndIf
-    \If{$A[ \lfloor \frac{N_A}{2} \rfloor ] \leq B[ \lfloor \frac{N_B}{2} \rfloor ]$}
-        \If{$N_A + \lfloor \frac{N_B}{2} \rfloor \geq k$}
-            \State \Return \Call{$K^{th}Element_2$}{$A, N_A, B, \lfloor \frac{N_B}{2} \rfloor, k$}
-        \EndIf
-        \State \Return $B[ k - N_A - \lfloor \frac{N_B}{2} \rfloor ]$
-    \Else
-        \If{$N_B + \lfloor \frac{N_A}{2} \rfloor \geq k$}
-            \State \Return \Call{$K^{th}Element_2$}{$A, \lfloor \frac{N_A}{2} \rfloor, B, N_B, k$}
-        \EndIf
-        \State \Return $A[ k - N_B - \lfloor \frac{N_A}{2} \rfloor ]$
+    \State $k \gets \lfloor \frac{k}{2} \rfloor$
+    \If{$A[ m_A ] < B[ m_B ]$}
+        \State \Return \Call{$K^{th}Element$}{$A, m_A + 1, B, l_B, k$}
     \EndIf
+    \State \Return \Call{$K^{th}Element$}{$A, l_A, B, m_B + 1, k$}
 \EndProcedure
 \Procedure{$K^{th}$}{$A, B, N, k$}
-	\State $N \gets \min(N, k)$
-	\State \Return \Call{$K^{th}Element_2$}{$A, N, B, N, k$}
+	\State $k \gets \min(N, k)$
+	\State \Return \Call{$K^{th}Element$}{$A, 1, B, 1, k$}
 \EndProcedure
 \end{algorithmic}
 \end{algorithm}
@@ -336,7 +332,7 @@ T( n ) \in & \Omega( \log( \frac{n}{3}! ) ) \\
     \State $bullets \gets \Call{EmptyStack}$
     \For {$i \gets N$ downto $1$}
         \While {$\lnot \Call{Empty}{bullets}$}
-            \State $bullet \gets \Call{Front}{bullets}$
+            \State $bullet \gets \Call{Top}{bullets}$
             \If {$A[ bullet ] < A[ i ]$}
                 \State $B[ bullet ] \gets i$
                 \State $\Call{pop}{bullets}$
