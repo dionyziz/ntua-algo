@@ -1,7 +1,7 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2011.11.28)  8 DEC 2011 15:11
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2011.11.28)  8 DEC 2011 17:01
 entering extended mode
 **algo1.tex
-(C:\Users\dionyziz\Documents\work\ntua\algo\algo1.tex
+(C:\Users\dionyziz\Documents\work\ntua\algo\ex1\algo1.tex
 LaTeX2e <2011/06/27>
 Babel <v3.8m> and hyphenation patterns for english, afrikaans, ancientgreek, ar
 abic, armenian, assamese, basque, bengali, bokmal, bulgarian, catalan, coptic, 
@@ -249,7 +249,7 @@ Style option: `fancyvrb' v2.7a, with DG/SPQR fixes, and firstline=lastline fix
 \c@FancyVerbLine=\count113
 \FV@StepNumber=\count114
 \FV@OutFile=\write3
-) (C:\Users\dionyziz\Documents\work\ntua\algo\algo1.aux
+) (C:\Users\dionyziz\Documents\work\ntua\algo\ex1\algo1.aux
 LaTeX Font Info:    Try loading font information for LGR+cmr on input line 2.
 
 ("C:\Program Files (x86)\MiKTeX 2.9\tex\generic\babel\lgrcmr.fd"
@@ -328,7 +328,7 @@ Missing character: There is no › in font grmi1200!
 
 
 {C:/ProgramData/MiKTeX/2.9/pdftex/config/pdftex.map} <C:/Users/dionyziz/Documen
-ts/work/ntua/algo/Pyrforos3.png>]
+ts/work/ntua/algo/ex1/Pyrforos3.png>]
 Missing character: There is no › in font grxn1440!
 Missing character: There is no › in font grxn1440!
 Missing character: There is no › in font grmn1095!
@@ -517,48 +517,48 @@ Missing character: There is no › in font grmn1095!
 Missing character: There is no › in font grmn1095!
 Missing character: There is no › in font grmn1095!
 Missing character: There is no › in font grmn1095!
- [8] [9 <C:/Users/dionyziz/Documents/work/ntua/algo/5.png>]
-(C:\Users\dionyziz\Documents\work\ntua\algo\algo1.aux) ) 
+ [8] [9 <C:/Users/dionyziz/Documents/work/ntua/algo/ex1/5.png>]
+(C:\Users\dionyziz\Documents\work\ntua\algo\ex1\algo1.aux) ) 
 Here is how much of TeX's memory you used:
  4678 strings out of 494045
- 65878 string characters out of 3145959
+ 65906 string characters out of 3145959
  129803 words of memory out of 3000000
  7867 multiletter control sequences out of 15000+200000
  28134 words of font info for 83 fonts, out of 3000000 for 9000
  715 hyphenation exceptions out of 8191
  27i,10n,24p,1672b,420s stack positions out of 5000i,500n,10000p,200000b,50000s
- <C:\Users\dionyziz\App
-Data\Local\MiKTeX\2.9\fonts\pk\ljfour\public\cbgreek\dpi600\grmn0900.pk> <C:\Us
-ers\dionyziz\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\public\cbgreek\dpi600\grm
-n0600.pk> <C:\Users\dionyziz\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\public\cb
-greek\dpi600\grxn1200.pk> <C:\Users\dionyziz\AppData\Local\MiKTeX\2.9\fonts\pk\
-ljfour\public\cbgreek\dpi600\grxn1440.pk> <C:\Users\dionyziz\AppData\Local\MiKT
-eX\2.9\fonts\pk\ljfour\public\cbgreek\dpi600\grmn1095.pk> <C:\Users\dionyziz\Ap
-pData\Local\MiKTeX\2.9\fonts\pk\ljfour\public\cbgreek\dpi600\grmc1200.pk> <C:\U
-sers\dionyziz\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\public\cbgreek\dpi600\gr
-mn1200.pk> <C:\Users\dionyziz\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\gnu\carm
-ina\dpi600\grmi1200.pk> <C:\Users\dionyziz\AppData\Local\MiKTeX\2.9\fonts\pk\lj
-four\public\cbgreek\dpi600\grxn2074.pk> <C:\Users\dionyziz\AppData\Local\MiKTeX
-\2.9\fonts\pk\ljfour\public\cbgreek\dpi600\grmn1440.pk> <C:\Users\dionyziz\AppD
-ata\Local\MiKTeX\2.9\fonts\pk\ljfour\public\cbgreek\dpi600\grmc1728.pk><C:/Prog
-ram Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Progra
-m Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Program 
-Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmcsc10.pfb><C:/Program F
-iles (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Program Fil
-es (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cmextra/cmex9.pfb><C:/Program F
-iles (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Program Fil
-es (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi12.pfb><C:/Program Files
- (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi6.pfb><C:/Program Files (x
-86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Program Files (x86)
-/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Program Files (x86)/Mi
-KTeX 2.9/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Program Files (x86)/MiKTe
-X 2.9/fonts/type1/public/amsfonts/cm/cmr6.pfb><C:/Program Files (x86)/MiKTeX 2.
-9/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Program Files (x86)/MiKTeX 2.9/fo
-nts/type1/public/amsfonts/cm/cmr9.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/
-type1/public/amsfonts/cm/cmsy10.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/ty
-pe1/public/amsfonts/cm/cmsy8.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1
-/public/amsfonts/symbols/msbm10.pfb>
-Output written on algo1.pdf (9 pages, 304851 bytes).
+ <C:\Users\dionyziz
+\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\public\cbgreek\dpi600\grmn0900.pk> <C
+:\Users\dionyziz\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\public\cbgreek\dpi600
+\grmn0600.pk> <C:\Users\dionyziz\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\publi
+c\cbgreek\dpi600\grxn1200.pk> <C:\Users\dionyziz\AppData\Local\MiKTeX\2.9\fonts
+\pk\ljfour\public\cbgreek\dpi600\grxn1440.pk> <C:\Users\dionyziz\AppData\Local\
+MiKTeX\2.9\fonts\pk\ljfour\public\cbgreek\dpi600\grmn1095.pk> <C:\Users\dionyzi
+z\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\public\cbgreek\dpi600\grmc1200.pk> <
+C:\Users\dionyziz\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\public\cbgreek\dpi60
+0\grmn1200.pk> <C:\Users\dionyziz\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\gnu\
+carmina\dpi600\grmi1200.pk> <C:\Users\dionyziz\AppData\Local\MiKTeX\2.9\fonts\p
+k\ljfour\public\cbgreek\dpi600\grxn2074.pk> <C:\Users\dionyziz\AppData\Local\Mi
+KTeX\2.9\fonts\pk\ljfour\public\cbgreek\dpi600\grmn1440.pk> <C:\Users\dionyziz\
+AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\public\cbgreek\dpi600\grmc1728.pk><C:/
+Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Pr
+ogram Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Prog
+ram Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmcsc10.pfb><C:/Progr
+am Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Program
+ Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cmextra/cmex9.pfb><C:/Progr
+am Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Program
+ Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi12.pfb><C:/Program F
+iles (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi6.pfb><C:/Program File
+s (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Program Files (
+x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Program Files (x86
+)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Program Files (x86)/M
+iKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr6.pfb><C:/Program Files (x86)/MiKTe
+X 2.9/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Program Files (x86)/MiKTeX 2.
+9/fonts/type1/public/amsfonts/cm/cmr9.pfb><C:/Program Files (x86)/MiKTeX 2.9/fo
+nts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program Files (x86)/MiKTeX 2.9/font
+s/type1/public/amsfonts/cm/cmsy8.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/t
+ype1/public/amsfonts/symbols/msbm10.pfb>
+Output written on algo1.pdf (9 pages, 304858 bytes).
 PDF statistics:
  355 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
