@@ -281,7 +281,7 @@ T( n ) \in & \Omega( \log( \frac{n}{3}! ) ) \\
 \caption{\textgreek{Άσκηση 4}}
 \begin{algorithmic}[1]
 \Procedure{MissingComicbook}{$n$}
-    \State $candidates \gets \{ x: 1 \leq x \leq n \}$
+    \State $candidates \gets \{ x: 0 \leq x < n \}$
     \State $result \gets 0$
     \For{$j \gets \log n$ downto $2$}
         \State $x \gets 0$
