@@ -1,0 +1,170 @@
+’σκηση 1
+(α)
+log( n^3 ) \in Θ( log( n ) )
+
+sqrt( n ) ( logn )^50
+
+n / log( log( n ) )
+
+log( n! ) \in Θ( n logn )
+
+n ( logn )^10
+
+n^{1.01}
+
+Σ_{k=1}^n k^5 \in O( Σ_{k=1}^n n^5 ) = O( n*n^5 ) = O( n^6 )
+Σ_{k=1}^n k^5 \in Ω( Σ_{k=1}^n (n/2)^5 ) = Ω( (n/2) * (n/2)^5 ) = Ω( (n/2)^6 ) = Ω( n^6 )
+Σ_{k=1}^n k^5 \in Θ( n^6 )
+
+(logn)^(logn) \in Θ( n^{loglogn} )
+
+(logn)^(sqrt(n))
+
+2^{2n}
+
+e^(n/lnn)
+
+5^(log_2 n)
+
+n^(loglogn)
+
+2^((log_2 n)^4) = n^((lgn)^3)
+
+sqrt(n!) \in O( sqrt( n^n ) ) = O( n^{n/2} )
+sqrt(n!) \in Ω( sqrt( ( n / 2 )^{ n / 2 } ) ) = ( n / 2 )^{n/4}
+
+n^(3^n)
+
+(β)
+1. Από Master Theorem θα είναι T \in Θ( n logn ) αφού n logn \in O( n^(log_7( 5 ) + ε) )
+2. Από Master Theorem θα είναι T \in Θ( n / log^2( n ) ) αφού n / log^2( n ) \in O( n^(log_5( 4 ) + ε) )
+3. Θα δείξω ότι T \in O( n ). Αρκεί να δείξω ότι \forall n \in \mathbb{N}: T( n ) \leq 21n. Πράγματι, με ισχυρή επαγωγή έχουμε:
+T( 1 ) = 1 \leq 21.
+Έστω \forall n < n_0: T(n) \leq 21n. Τότε:
+T( n_0 ) = T( n_0 / 3 ) + 3T( n_0 / 7 ) + n_0
+\leq 21 n_0 / 3 + 21 * 3 * n_0 / 7 + n0
+= 7 n_0 + 9 n_0 + n_0 \leq 21 n_0.
+’ρα T \in O( n ).
+
+Θα δείξω τώρα ότι T \in Ω( n ). Αρκεί να δείξω ότι \forall n \in \mathbb{N}: T( n ) \geq n. Πράγματι, με ισχυρή επαγωγή έχουμε:
+T( 1 ) = 1 \geq 1.
+Έστω \forall n < n_0: T( n ) \geq n. Τότε:
+T( n_0 ) = T( n_0 / 3 ) + 3T( n_0 / 7 ) + n_0
+\geq n_0 / 3 + 3 n_0 / 7 + n0
+\geq n0.
+’ρα T \in Ω( n ).
+
+’ρα T \in Θ( n ).
+
+4. Από Master Theorem θα είναι T in Θ( n logn ) αφού n \in Θ( n^(log_6(6)) ) = Θ( n )
+5. Από το δέντρο της αναδρομής έχουμε τα φράγματα T \in Ο( n log_{3/2}n ) και T \in Ω( n log_(3)n ) και άρα T \in Θ( n logn ).
+6. Από Master Theorem θα είναι T \in Θ( n^3 log^2(n) ) αφού n^3 log^2( n ) \in O( n^(2 + ε) ) 
+7. Θα είναι Τ( n ) = Σ_{i=1}^{\sqrt(n)} (loglog(i^2)) = 2Σ_{i=1}^{\sqrt(n)} (loglog(i)). Έχουμε T( n ) \in O( 2Σ_{i=1}^{\sqrt(n)} (loglog(n)) ) = O( \sqrt(n) loglog(n) ). Επιπλέον T( n ) \in Ω( 2Σ_{i=1}^{\sqrt(n)} (loglog(n)) ) = Ω( \sqrt(n - 1) loglog(n - 1) ).
+8. Δεν μπορούμε να χρησιμοποιήσουμε το Master Theorem καθώς η παράμετρος της συνάρτησης στην αναδρομή δεν είναι της μορφής n / b. Όμως η αναδρομική σχέση λύνεται ως εξής:
+   T( n ) = T( n - 3 ) + logn
+=> T( n ) = Σ_{i = 0}^{n/3 - 1/3} log( 3i + 1 ) = log( Π_{i = 0}^{n/3 - 1/3}(3i + 1) ).
+
+Συνεπώς είναι T( n ) in O( log( n! ) ) = O( nlogn ).
+Επιπλέον είναι T( n ) in Ω( log( ( n / 3 )! ) ) = Ω( log( ( n / 6 )^( n / 6 ) ) ) = Ω( nlogn ).
+’ρα T( n ) in Θ( n logn ).
+
+’σκηση 2
+def fastHeapSort( A, N ):
+    h = emptyMinHeap
+    for i in A:
+        // heapFind is O( loglogN ) as the heap will have O( logN ) items
+        item = heapFind( h, A[ i ] )
+        if item != NULL:
+            item.count = item.count + 1
+        else:
+            heapInsert( h, {
+                key: A[ i ],
+                data: {
+                    count: 1
+                }
+            } )
+    j = 0
+    // process items in O( NloglogN )
+    while !empty( h ):
+        // extractMin should take O( loglogN )
+        item = extractMin( h )
+        for i = 1 to item.count:
+            A[ j ] = item.key
+            ++j
+    
+’σκηση 3
+(α)
+def sizeUpperBound( A ):
+    high = 1
+    while A[ high ] != Infinity
+        high *= 2
+    return high
+
+def binarySearch( A, key, low, high ):
+    // assert: sorted A
+    if low >= high:
+        return false
+    mid = floor( ( low + high ) / 2 )
+    if A[ mid ] == key:
+        return mid
+    if key < A[ mid ]:
+        return binarySearch( A, key, low, mid )
+    if key > A[ mid ]:
+        return binarySearch( A, key, mid + 1, high )
+        
+def find( A, key ):
+    // assert: sorted A
+    return binarySearch( A, key, 0, sizeUpperBound( A ) )
+    
+(β)
+def kthElementOfTwo( A, AN, B, BN, k ):
+    // assert: sorted A, sorted B, AN + BN >= k
+    if AN + BN == k:
+        return max( A[ AN - 1 ], B[ BN - 1 ] )
+    if A[ AN / 2 ] <= B[ BN / 2 ]:
+        if AN + Bmid >= k:
+            return kthElement( A, AN, B, Bmid, k )
+        return B[ k - AN - Bmid ]
+    else:
+        if BN + Amid >= k:
+            return kthElement( A, Amid, B, BN, k )
+        return A[ k - BN - Amid ]
+        
+’σκηση 4
+def missingComicbook( n ):
+    // limited ability for 2n calls to oracle ask( i, j )
+    candidates = { x: 1 <= x <= n }
+    result = 0
+    for j = lgn downto 2:
+        x = 0
+        candidatesWithOne = candidatesWithZero = {}
+        // assert: |candidates| == n / 2^(lgn - j) items
+        for i in candidates:
+            if ask( i, j ) == 1:
+                candidatesWithOne U= { i }
+                x = 1 - x
+            else:
+                candidatesWithZero U= { i }
+        // assert: candidatesWithOne U candidatesWithZero == candidates
+        if x == 1:
+            candidates \= candidatesWithZero
+            result += 2 ^ j
+        else:
+            candidates \= candidatesWithOne
+    result += ask( U candidates, 1 )
+    return result
+
+’σκηση 5
+def buildings( A, AN ):
+	B = []
+	shadows = emptyStack()
+	for i = AN downto 1:
+		while !empty( shadows ):
+			shadow = shadows.front()
+			if A[ shadow ] < A[ i ]:
+				B[ shadow ] = i
+				shadows.pop()
+			else
+				break
+		shadow.push( i )
+	return B
