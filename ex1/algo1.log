@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2011.11.28)  8 DEC 2011 14:08
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2011.11.28)  8 DEC 2011 15:11
 entering extended mode
 **algo1.tex
 (C:\Users\dionyziz\Documents\work\ntua\algo\algo1.tex
@@ -429,9 +429,6 @@ Missing character: There is no › in font grmn1095!
 Missing character: There is no › in font grmn1095!
 Missing character: There is no › in font grmn1095!
 Missing character: There is no › in font grmn1095!
-Missing character: There is no › in font grmn1095!
-Missing character: There is no › in font grmn1095!
-Missing character: There is no › in font grmn1095!
  [6]
 Missing character: There is no › in font grmn1095!
 Missing character: There is no › in font grmn1095!
@@ -518,17 +515,16 @@ Missing character: There is no › in font grmn1095!
 Missing character: There is no › in font grmn1095!
 Missing character: There is no › in font grmn1095!
 Missing character: There is no › in font grmn1095!
- [8]
 Missing character: There is no › in font grmn1095!
 Missing character: There is no › in font grmn1095!
- [9 <C:/Users/dionyziz/Documents/work/ntua/algo/5.png>]
+ [8] [9 <C:/Users/dionyziz/Documents/work/ntua/algo/5.png>]
 (C:\Users\dionyziz\Documents\work\ntua\algo\algo1.aux) ) 
 Here is how much of TeX's memory you used:
- 4676 strings out of 494045
- 65854 string characters out of 3145959
+ 4678 strings out of 494045
+ 65878 string characters out of 3145959
  129803 words of memory out of 3000000
- 7866 multiletter control sequences out of 15000+200000
- 27781 words of font info for 82 fonts, out of 3000000 for 9000
+ 7867 multiletter control sequences out of 15000+200000
+ 28134 words of font info for 83 fonts, out of 3000000 for 9000
  715 hyphenation exceptions out of 8191
  27i,10n,24p,1672b,420s stack positions out of 5000i,500n,10000p,200000b,50000s
  <C:\Users\dionyziz\App
@@ -562,7 +558,7 @@ nts/type1/public/amsfonts/cm/cmr9.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/
 type1/public/amsfonts/cm/cmsy10.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/ty
 pe1/public/amsfonts/cm/cmsy8.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1
 /public/amsfonts/symbols/msbm10.pfb>
-Output written on algo1.pdf (9 pages, 304772 bytes).
+Output written on algo1.pdf (9 pages, 304851 bytes).
 PDF statistics:
  355 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
