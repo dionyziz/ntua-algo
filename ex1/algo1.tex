@@ -252,7 +252,7 @@ T( n ) &\in \Omega\left( \log( \frac{n}{3}! ) \right) \\
 \caption{\textgreek{Άσκηση 3(β)}}
 \begin{algorithmic}[1]
 \Require $sorted(A[l_A \dots l_A + k]), sorted(B[l_B \dots l_B + k])$
-\Procedure{$K^{th}Element$}{$A, l_A, B, l_B, k$}
+\Procedure{K$^{th}$Element}{$A, l_A, B, l_B, k$}
 	\State $m_A \gets l_A + \lfloor \frac{k - 1}{2} \rfloor$
 	\State $m_B \gets l_B + \lfloor \frac{k - 1}{2} \rfloor$
     \If{$k = 1$}
@@ -260,13 +260,13 @@ T( n ) &\in \Omega\left( \log( \frac{n}{3}! ) \right) \\
     \EndIf
     \State $k \gets \lfloor \frac{k}{2} \rfloor$
     \If{$A[ m_A ] < B[ m_B ]$}
-        \State \Return \Call{$K^{th}Element$}{$A, m_A + 1, B, l_B, k$}
+        \State \Return \Call{K$^{th}$Element}{$A, m_A + 1, B, l_B, k$}
     \EndIf
-    \State \Return \Call{$K^{th}Element$}{$A, l_A, B, m_B + 1, k$}
+    \State \Return \Call{K$^{th}$Element}{$A, l_A, B, m_B + 1, k$}
 \EndProcedure
-\Procedure{$K^{th}$}{$A, B, N, k$}
+\Procedure{K$^{th}$}{$A, B, N, k$}
 	\State $k \gets \min(N, k)$
-	\State \Return \Call{$K^{th}Element$}{$A, 1, B, 1, k$}
+	\State \Return \Call{K$^{th}$Element}{$A, 1, B, 1, k$}
 \EndProcedure
 \end{algorithmic}
 \end{algorithm}
@@ -335,7 +335,7 @@ T( n ) &\in \Omega\left( \log( \frac{n}{3}! ) \right) \\
             \State $bullet \gets \Call{Top}{bullets}$
             \If {$A[ bullet ] < A[ i ]$}
                 \State $B[ bullet ] \gets i$
-                \State $\Call{pop}{bullets}$
+                \State $\Call{Pop}{bullets}$
             \Else
                 \State $break$
             \EndIf
