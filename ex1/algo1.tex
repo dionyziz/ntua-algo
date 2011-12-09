@@ -288,7 +288,7 @@ T( n ) &\in \Omega\left( \log( \frac{n}{3}! ) \right) \\
         \State $candidates_0 \gets \{\}$
         \State $candidates_1 \gets \{\}$
         \ForAll{$i \in candidates$}
-            \If{$ask( i, j ) = 1$}
+            \If{$\Call{Ask}{i, j} = 1$}
                 \State $candidates_1 \gets candidates_1 \cup \{ i \}$
                 \State $x \gets 1 - x$
             \Else
@@ -302,7 +302,7 @@ T( n ) &\in \Omega\left( \log( \frac{n}{3}! ) \right) \\
             \State $candidates \gets candidates_0$
         \EndIf
     \EndFor
-    \State $result \gets result + ask( \bigcup candidates, 1 )$\footnote{Test}
+    \State $result \gets result + \Call{Ask}{\bigcup candidates, 1}$\footnote{Test}
     \State \Return $result$
 \EndProcedure
 \end{algorithmic}
