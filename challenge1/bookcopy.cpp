@@ -2,9 +2,10 @@
 
 using namespace std;
 
+int A[ 100000 ];
+
 int main() {
     int N, K;
-    int A[ 10000 ];
     int low, high, solution;
     int max = 0, sum = 0;
     bool invalid;
@@ -18,12 +19,12 @@ int main() {
             max = A[ i ];
         }
     }
-    low = max;
+    low = max - 1;
     high = sum;
 
     bool valid;
 
-    while ( low != high ) {
+    while ( high - low > 1 ) {
         solution = ( high + low ) / 2;
         valid = true;
         sum = 0;
@@ -32,8 +33,8 @@ int main() {
             if ( sum > solution ) {
                 sum = A[ i ];
                 ++j;
-                if ( j > K ) {
-                    low = solution + 1;
+                if ( j >= K ) {
+                    low = solution;
                     valid = false;
                     break;
                 }
@@ -44,7 +45,7 @@ int main() {
         }
     }
 
-    printf( "%i\n", low );
+    printf( "%i\n", high );
 
     return 0;
 }
