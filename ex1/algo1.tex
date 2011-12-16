@@ -60,33 +60,33 @@
 \begin{align*}
 \log n^3 &\in \Theta( \log n )\\
 \log( n! ) &\in \Theta( n \log n )\\
-5^{(lg n)} &\in \Theta( n^{\frac{1}{log_5 2}} )\\
+5^{(\lg n)} &\in \Theta( n^{\frac{1}{\log_5 2}} )\\
 (\log n)^{\log n} &\in \Theta( n^{\log \log n} )
 \end{align*}
 
 \begin{align*}
-\sum_{k=1}^n k^5 \in & O( \sum_{k=1}^n n^5 )\\
-= & O( n*n^5 )\\
-= & O( n^6 ) \\
-\sum_{k=1}^n k^5 \in & \Omega( \sum_{k=1}^n (\frac{n}{2})^5 )\\
-= & \Omega( (\frac{n}{2}) * (\frac{n}{2})^5 )\\
-= & \Omega( (\frac{n}{2})^6 ) = \Omega( n^6 ) \\
-\sum_{k=1}^n k^5 \in & \Theta( n^6 )
+\sum_{k=1}^n k^5 &\in O\left( \sum_{k=1}^n n^5 \right)\\
+&= O( n \times n^5 )\\
+&= O( n^6 ) \\
+\sum_{k=1}^n k^5 &\in \Omega\left( \sum_{k=1}^n \left(\frac{n}{2}\right)^5 \right)\\
+&= \Omega\left( \left(\frac{n}{2}\right) \times \left(\frac{n}{2}\right)^5 \right)\\
+&= \Omega\left( \left(\frac{n}{2}\right)^6 \right) = \Omega( n^6 ) \\
+\sum_{k=1}^n k^5 &\in \Theta( n^6 )
 \end{align*}
 
 \begin{align*}
-\sqrt{n!} \in & O( \sqrt{ n^n } )\\
-= & O( n^{\frac{n}{2}} )\\
-\sqrt{n!} \in & \Omega( \sqrt{ ( \frac{n}{2} )^{ \frac{n}{2} } } ) \\
-= & \Omega( (\frac{n}{2})^{\frac{n}{4}} )
+\sqrt{n!} &\in O( \sqrt{ n^n } )\\
+&= O( n^{\frac{n}{2}} )\\
+\sqrt{n!} &\in \Omega\left( \sqrt{ ( \frac{n}{2} )^{ \frac{n}{2} } } \right) \\
+&= \Omega\left( \left(\frac{n}{2}\right)^{\frac{n}{4}} \right)
 \end{align*}
 
 Με βάση αυτά καταλήγουμε στην παρακάτω διάταξη:
 
 \begin{align*}
-\Theta( \log n^3 ) &\subset& \Theta( \sqrt n \log^{50} n ) &\subset& \Theta( \frac{n}{\log \log n} )\subset \\
+\Theta( \log n^3 ) &\subset& \Theta( \sqrt n \log^{50} n ) &\subset& \Theta\left( \frac{n}{\log \log n} \right)\subset \\
 \Theta(\log( n! )) &\subset& \Theta( n \log^{10} n ) &\subset& \Theta( n^{1.01} )\subset \\
-\Theta( 5^{(lg n)} ) &\subset& \Theta( \sum_{k=1}^n k^5 ) &\subset& \Theta( (\log n)^{\log n} ) = \\
+\Theta( 5^{(\lg n)} ) &\subset& \Theta\left( \sum_{k=1}^n k^5 \right) &\subset& \Theta( (\log n)^{\log n} ) = \\
 \Theta( n^{\log \log n} ) &\subset& \Theta( 2^{(\lg n)^4} ) &\subset& \Theta( (\log n)^{\sqrt n} ) \subset\\
 \Theta( e^{\frac{n}{\ln n}} ) &\subset& \Theta( n {3^n} ) &\subset& \Theta( 2^{2n} ) \subset\\
 \Theta( \sqrt{n!} )
@@ -95,10 +95,10 @@
 \subsection*{(β)}
 
 \begin{enumerate}
-\item Αφού $n \log n \in \Omega( n^{log_7 5 + \epsilon} )$ άρα από το \textlatin{Master Theorem} θα είναι: 
+\item Αφού $n \log n \in \Omega( n^{\log_7 5 + \epsilon} )$ άρα από το \textlatin{Master Theorem} θα είναι: 
 \[ T \in \Theta( n \log n )\]
 \item Αφού $\frac{n}{log^2 n} \in \Omega( n^{log_5 4 + \epsilon} )$ άρα από το \textlatin{Master Theorem} θα είναι:
-\[ T \in \Theta( \frac{n}{log^2 n} ) \]
+\[ T \in \Theta( \frac{n}{\log^2 n} ) \]
 \item Θα δείξω ότι $T \in O( n )$. Αρκεί να δείξω ότι $\forall n \in \mathbb{N}: T( n ) \leq 21n$. Πράγματι, με ισχυρή επαγωγή έχουμε:
 \[
 T( 1 ) = 1 \leq 21
@@ -107,9 +107,9 @@ T( 1 ) = 1 \leq 21
 Έστω $\forall n < n_0: T(n) \leq 21n$. Τότε:
 
 \begin{align*}
-T( n_0 ) & = T( \frac{n_0}{3} ) + 3T( \frac{n_0}{7} ) + n_0 \\
-         & \leq 21 \frac{n_0}{3} + 21 * 3 * \frac{n_0}{7} + n_0 \\
-         & = 7 n_0 + 9 n_0 + n_0 \leq 21 n_0.
+T( n_0 ) &= T\left( \frac{n_0}{3} \right) + 3T\left( \frac{n_0}{7} \right) + n_0 \\
+         &\leq 21 \frac{n_0}{3} + 21 * 3 * \frac{n_0}{7} + n_0 \\
+         &= 7 n_0 + 9 n_0 + n_0 \leq 21 n_0.
 \end{align*}
 
 Άρα $T \in O( n )$.
@@ -122,22 +122,22 @@ T( 1 ) = 1 \geq 1
 Έστω $\forall n < n_0: T( n ) \geq n$. Τότε:
 
 \begin{align*}
-T( n_0 ) & = T( \frac{n_0}{3} ) + 3T( \frac{n_0}{7} ) + n_0\\
-& \geq \frac{n_0}{3} + 3 \frac{n_0}{7} + n_0\\
-& \geq n_0
+T( n_0 ) &= T\left( \frac{n_0}{3} \right) + 3T\left( \frac{n_0}{7} \right) + n_0\\
+&\geq \frac{n_0}{3} + 3 \frac{n_0}{7} + n_0\\
+&\geq n_0
 \end{align*}
 
 Άρα $T \in \Omega( n )$ και συνεπώς $T \in \Theta( n )$.
 
 \item Αφού $n \in \Theta( n^{\log_6 6} ) = \Theta( n )$ άρα από το \textlatin{Master Theorem} θα είναι $T \in \Theta( n \log n )$.
-\item Από το δέντρο της αναδρομής έχουμε τα φράγματα $T \in O( n \log_{\frac{3}{2}}n )$ και $T \in \Omega( n \log_3 n )$ και άρα $T \in \Theta( n \log n )$.
+\item Από το δέντρο της αναδρομής έχουμε τα φράγματα $T \in O( n \log_{3/2}n )$ και $T \in \Omega( n \log_3 n )$ και άρα $T \in \Theta( n \log n )$.
 \item Αφού $n^3 \log^2 n \in \Omega( n^{2 + \epsilon} ) $ άρα από το \textlatin{Master Theorem} θα είναι $T \in \Theta( n^3 \log^2 n )$ 
 \item Θα είναι:
 \begin{align*}
-T( n ) & = \sum_{i=1}^{\lg\lg n} \lg\lg 2^{2^i}\\
-       & = \sum_{i=1}^{\lg\lg n} \lg 2^i\\
-       & = \sum_{i=1}^{\lg\lg n} i\\
-       & \in \Theta( ( \lg\lg n )^2 )\\
+T( n ) &= \sum_{i=1}^{\lg\lg n} \lg\lg 2^{2^i}\\
+       &= \sum_{i=1}^{\lg\lg n} \lg 2^i\\
+       &= \sum_{i=1}^{\lg\lg n} i\\
+       &\in \Theta( ( \lg\lg n )^2 )\\
 \end{align*}
        
 \item Έχουμε:
@@ -145,29 +145,29 @@ T( n ) & = \sum_{i=1}^{\lg\lg n} \lg\lg 2^{2^i}\\
 \begin{align*}
             T( n ) &= T( n - 3 ) + \log n \\
 \Rightarrow T( n ) &= \sum_{i = 0}^{\frac{n}{3} - \frac{1}{3}} \log( 3i + 1 )\\
-                   &= \log( \prod_{i = 0}^{\frac{n}{3} - \frac{1}{3}} (3i + 1) )
+                   &= \log\left( \prod_{i = 0}^{\frac{n}{3} - \frac{1}{3}} (3i + 1) \right)
 \end{align*}
 
 Συνεπώς είναι:
 
 \begin{align*}
-T( n ) \in & O( \log( n! ) )\\
-         = & O( n \log n )
+T( n ) &\in O( \log( n! ) )\\
+       &=   O( n \log n )
 \end{align*}
 
 Επιπλέον είναι:
 
 \begin{align*}
-T( n ) \in & \Omega( \log( \frac{n}{3}! ) ) \\
-         = & \Omega( \log (( \frac{n}{6} )^{\frac{n}{6}}) ) \\
-         = & \Omega( n \log n )
+T( n ) &\in \Omega\left( \log( \frac{n}{3}! ) \right) \\
+         &= \Omega\left( \log \left(\left( \frac{n}{6} \right)^{\frac{n}{6}}\right) \right) \\
+         &= \Omega( n \log n )
 \end{align*}
 
 Άρα $T( n ) \in \Theta( n \log n )$.
 \end{enumerate}
 
 \section*{Άσκηση 2}
-Χρησιμοποιούμε ένα \textlatin{AVL} δέντρο για να κρατάμε τα στοιχεία μας. Ξεκινώντας με ένα άδειο δέντρο εισάγουμε όλα τα στοιχεία προσέχοντας να μην εισάγουμε πολλαπλά ταυτόσημα στοιχεία. Αντίθετα, κατά την εισαγωγή ενός στοιχείου που υπάρχει ήδη, αυξάνουμε ένα μετρητή που δείχνει το πλήθος των εμφανίσεών του. Τέλος, εξάγουμε τα στοιχεία σε αύξουσα σειρά εισάγοντας το κατάλληλο πλήθος στον πίνακα που θα επιστρέψουμε. Καθώς το δέντρο θα περιέχει κάθε στιγμή το πολύ $\lg n$ στοιχεία, οι λειτουργίες εισαγωγής στοιχείου και εξαγωγής ελαχίστου θα είναι $O( \lg \lg n )$.
+Χρησιμοποιούμε ένα \textlatin{AVL} δέντρο για να κρατάμε τα στοιχεία μας. Ξεκινώντας με ένα άδειο δέντρο εισάγουμε όλα τα στοιχεία προσέχοντας να μην εισάγουμε πολλαπλά ταυτόσημα στοιχεία. Αντίθετα, κατά την εισαγωγή ενός ήδη υπάρχοντος στοιχείου, αυξάνουμε ένα μετρητή που δείχνει το πλήθος των εμφανίσεών του. Τέλος, εξάγουμε τα στοιχεία σε αύξουσα σειρά εισάγοντας το κατάλληλο πλήθος στον πίνακα που θα επιστρέψουμε. Καθώς το δέντρο θα περιέχει κάθε στιγμή το πολύ $O(\lg n)$ στοιχεία, οι λειτουργίες εισαγωγής στοιχείου και εξαγωγής ελαχίστου θα είναι $O( \lg \lg n )$.
 
 \selectlanguage{english}
 \begin{algorithm}[H]
@@ -210,7 +210,7 @@ T( n ) \in & \Omega( \log( \frac{n}{3}! ) ) \\
 \Procedure{SizeUpperBound}{$A$}
     \State $high \gets 1$
     \While{$A[ high ] \neq \infty$}
-        \State $high \gets 2high$
+        \State $high \gets 2 \times high$
     \EndWhile
     \State \Return $high$
 \EndProcedure
@@ -245,14 +245,14 @@ T( n ) \in & \Omega( \log( \frac{n}{3}! ) ) \\
 \subsection*{(β)}
 Ξεκινάμε με δύο τμήματα των πινάκων $A$ και $B$ που περιέχουν σίγουρα το $k$-οστό στοιχείο. Αυτό σίγουρα θα βρίσκεται στα πρώτα $k$ στοιχεία ενός εκ των δύο. Κρατάμε λοιπόν τα $k$ πρώτα στοιχεία του $A$ και τα $k$ πρώτα στοιχεία του $B$. Στη συνέχεια, διαλέγουμε το μεσαίο στοιχείο των δύο τμημάτων τα οποία και συγκρίνουμε. Χρησιμοποιώντας αυτή τη σύγκριση μαζί με την μεταβατικότητα της σύγκρισης και το γεγονός ότι τα δύο τμήματα είναι ταξινομημένα, απορρίπτουμε τον μισό και από τα δύο τμήματα και ενημερώνουμε το $k$ αντίστοιχα βρίσκοντας το μισό του. Συνεχίζοντας αυτή τη διαδικασία αναδρομικά, μετά από $\log k$ επαναλήψεις καταλήγουμε στην περίπτωση όπου τα τμήματά μας έχουν λιγότερα από $1$ στοιχείο το καθένα, και συνεπώς το στοιχείο που αναζητούμε είναι ένα από αυτά τα δύο.
 
-Η λύση αυτή χρησιμοποιεί τη μέθοδο ((Διαίρει και εξειδίκευσε)), καθώς κάθε φορά αφαιρεί το μισό κάθε ενός από τα δύο τμήματα που μένουν να εξετάσουμε. Έτσι η πολυπλοκότητά της είναι $\Theta( \log k )$.
+Η λύση αυτή χρησιμοποιεί τη μέθοδο ((Διαίρει και εξειδίκευε)), καθώς κάθε φορά αφαιρεί το μισό κάθε ενός από τα δύο τμήματα που μένουν να εξετάσουμε. Έτσι η πολυπλοκότητά της είναι $\Theta( \log k )$.
 
 \selectlanguage{english}
 \begin{algorithm}[H]
 \caption{\textgreek{Άσκηση 3(β)}}
 \begin{algorithmic}[1]
 \Require $sorted(A[l_A \dots l_A + k]), sorted(B[l_B \dots l_B + k])$
-\Procedure{$K^{th}Element$}{$A, l_A, B, l_B, k$}
+\Procedure{K$^{th}$Element}{$A, l_A, B, l_B, k$}
 	\State $m_A \gets l_A + \lfloor \frac{k - 1}{2} \rfloor$
 	\State $m_B \gets l_B + \lfloor \frac{k - 1}{2} \rfloor$
     \If{$k = 1$}
@@ -260,13 +260,13 @@ T( n ) \in & \Omega( \log( \frac{n}{3}! ) ) \\
     \EndIf
     \State $k \gets \lfloor \frac{k}{2} \rfloor$
     \If{$A[ m_A ] < B[ m_B ]$}
-        \State \Return \Call{$K^{th}Element$}{$A, m_A + 1, B, l_B, k$}
+        \State \Return \Call{K$^{th}$Element}{$A, m_A + 1, B, l_B, k$}
     \EndIf
-    \State \Return \Call{$K^{th}Element$}{$A, l_A, B, m_B + 1, k$}
+    \State \Return \Call{K$^{th}$Element}{$A, l_A, B, m_B + 1, k$}
 \EndProcedure
-\Procedure{$K^{th}$}{$A, B, N, k$}
+\Procedure{K$^{th}$}{$A, B, N, k$}
 	\State $k \gets \min(N, k)$
-	\State \Return \Call{$K^{th}Element$}{$A, 1, B, 1, k$}
+	\State \Return \Call{K$^{th}$Element}{$A, 1, B, 1, k$}
 \EndProcedure
 \end{algorithmic}
 \end{algorithm}
@@ -288,7 +288,7 @@ T( n ) \in & \Omega( \log( \frac{n}{3}! ) ) \\
         \State $candidates_0 \gets \{\}$
         \State $candidates_1 \gets \{\}$
         \ForAll{$i \in candidates$}
-            \If{$ask( i, j ) = 1$}
+            \If{$\Call{Ask}{i, j} = 1$}
                 \State $candidates_1 \gets candidates_1 \cup \{ i \}$
                 \State $x \gets 1 - x$
             \Else
@@ -302,7 +302,7 @@ T( n ) \in & \Omega( \log( \frac{n}{3}! ) ) \\
             \State $candidates \gets candidates_0$
         \EndIf
     \EndFor
-    \State $result \gets result + ask( \bigcup candidates, 1 )$\footnote{Test}
+    \State $result \gets result + \Call{Ask}{\bigcup candidates, 1}$\footnote{Test}
     \State \Return $result$
 \EndProcedure
 \end{algorithmic}
@@ -335,7 +335,7 @@ T( n ) \in & \Omega( \log( \frac{n}{3}! ) ) \\
             \State $bullet \gets \Call{Top}{bullets}$
             \If {$A[ bullet ] < A[ i ]$}
                 \State $B[ bullet ] \gets i$
-                \State $\Call{pop}{bullets}$
+                \State $\Call{Pop}{bullets}$
             \Else
                 \State $break$
             \EndIf
