@@ -34,7 +34,7 @@ int main() {
         // printf( "%i\n", J[ i ] );
     }
     --i;
-    printf( "Minimized sum square error = %i\n", J[ i ] );
+    // printf( "Minimized sum square error = %i\n", J[ i ] );
     for ( ; i > 0; i = K[ i ] ) {
         for ( int j = K[ i ] + 1; j <= i; ++j ) {
             printf( "%s ", W[ j ] );
