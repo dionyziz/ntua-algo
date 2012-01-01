@@ -1,0 +1,159 @@
+\documentclass[11pt,a4paper]{book}
+\usepackage[english,greek]{babel}
+\usepackage[utf8x]{inputenc}
+\usepackage[noend]{algpseudocode}
+\usepackage{algorithm}
+\usepackage{amssymb,latexsym,amsmath,ucs,amsthm,setspace,graphicx,fancyvrb,float}
+\newtheorem*{lemma}{Λήμμα}
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+\newcommand{\defeq}{\overset{\underset{\mathrm{def}}{}}{=}}
+\makeatletter
+\def\imod#1{\allowbreak\mkern10mu({\operator@font mod}\,\,#1)}
+\makeatother
+\raggedbottom
+\begin{document}
+
+\begin{titlepage}
+\begin{center}
+
+\includegraphics[width=0.15\textwidth]{Pyrforos3.png}\\[1cm]
+\textsc{\LARGE Εθνικό Μετσόβιο Πολυτεχνείο}\\[1.5cm]
+
+\Large{ 2η Γραπτή Άσκηση }\\[0.5cm]
+
+% Title
+\begin{doublespace}
+\HRule \\[0.4cm]
+{\huge \bfseries
+Αλγόριθμοι \& Πολυπλοκότητα
+}\\[0.4cm]
+\end{doublespace}
+
+\HRule \\[1.5cm]
+
+\begin{minipage}{0.4\textwidth}
+\begin{flushleft} \large
+\emph{Σπουδαστής:} \\
+Διονύσης \textsc{Ζήνδρος} (06601)\\
+\textlatin{\textless dionyziz@gmail.com\textgreater}
+\end{flushleft}
+\end{minipage}
+\begin{minipage}{0.4\textwidth}
+\begin{flushright} \large
+\emph{Διδάσκοντες:} \\
+Στάθης \textsc{Ζάχος}\\
+Δημήτρης \textsc{Φωτάκης}
+\end{flushright}
+\end{minipage}
+
+\vfill
+
+{\large 31 Δεκεμβρίου 2011}
+\end{center}
+\end{titlepage}
+
+\section*{Άσκηση 1}
+\section*{Άσκηση 2}
+\section*{Άσκηση 3}
+\subsection*{α)}
+\subsection*{β)}
+\selectlanguage{english}
+\begin{algorithm}[H]
+\caption{\textgreek{Άσκηση 3β}}
+\begin{algorithmic}[1]
+\Procedure{Chess}{$C, n$}
+	\State $M \gets \{ x \in 2^{\{1, 2, 3, 4\}}: \forall \alpha, \beta \in x: \alpha - 1 \neq \beta \}$
+	\ForAll{$\mu \in M$}
+		\State $J'[ \mu ] \gets 0$
+	\EndFor
+	\For{$i \gets 0$ to $n$}
+		\For{$\mu \in M$}
+			\State $J[ \mu ] \gets 0$
+			\For{$\nu \in M$}
+				\If {$\nu \cap \mu = \emptyset$}
+					\State $J[ \mu ] \gets \max( J[ \mu ], J'[ \nu ] + \sum_{q \in \mu}{C[ i, q ]} )$
+				\EndIf
+			\EndFor
+		\EndFor
+		\State $J' \gets J$
+	\EndFor
+	\State \Return $\max( \{ J[ \mu ]: \mu \in M \} )$
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+\selectlanguage{greek}
+
+\section*{Άσκηση 4}
+
+\selectlanguage{english}
+\begin{algorithm}[H]
+\caption{\textgreek{Άσκηση 4}}
+\begin{algorithmic}[1]
+\Procedure{LineSplit}{$l, n, C$}
+	\State $J[ 0 ] \gets 0$
+	\For{$i \gets 1$ to $n$}
+		\State $J[ i ] \gets \infty$
+		\State $cost \gets C + 1$
+		\For{$j \gets i$ downto $1$}
+			\State $cost \gets cost - ( l[ j ] + 1 )$
+			\If{$cost < 0$}
+				\State $break$
+			\EndIf
+			\State $J[ i ] \gets \min( J[ i ], J[j - 1] + cost^2 )$
+		\EndFor
+	\EndFor
+	\State \Return $J[ n ]$
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+\selectlanguage{greek}
+
+\section*{Άσκηση 5}
+\selectlanguage{english}
+\begin{algorithm}[H]
+\caption{\textgreek{Άσκηση 5}}
+\begin{algorithmic}[1]
+\Procedure{Servers}{$b, c, n$}
+	\State $\Omega \gets \{ i: b[ i ] > 0 \}$
+	\If {$\Omega = \emptyset$}
+		\State \Return $\emptyset$
+	\EndIf
+	\State $K \gets \max( \Omega )$
+	\State $JS[ K ] \gets c[ K ]$
+	\State $J[ K ] \gets c[ K ]$
+	\State $W[ K ] \gets K$
+	\For {$i \gets K - 1$ downto $1$}
+		\State $JS[ i ] \gets J[ i + 1 ] + C[ i ]$
+		\State $J[ i ] \gets \infty$
+		\For {$j \gets i$ to $W[ i + 1 ]$}
+			\State $cost \gets JS[ j ]$
+			\For {$l = i$ to $j$}
+				\State $cost \gets cost + ( j - l )B[ l ]$
+				\If {$cost >= J[ i ]$}
+					\State $break$
+				\EndIf
+			\EndFor
+			\If {$cost < J[ i ]$}
+				\State $J[ i ] \gets cost$
+				\State $W[ i ] \gets j$
+			\EndIf
+		\EndFor
+	\EndFor
+	\State $S \gets \{ S_K \}$
+	\State $i \gets W[ 1 ] + 1$
+	\While {$i \leq K$}
+		\State $S \gets S \cup \{ S_{i - 1} \}$
+		\State $i \gets W[ i ] + 1$
+	\EndWhile
+	\State \Return S
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+\selectlanguage{greek}
+
+\section*{Άσκηση 6}
+\subsection*{α)}
+\subsection*{β)}
+\subsection*{γ)}
+
+\end{document}
