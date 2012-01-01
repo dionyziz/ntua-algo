@@ -5,7 +5,7 @@
 using namespace std;
 
 int checker[ 4 ];
-int mus[] = { 2, 4, 5, 9, 10 };
+int mus[] = { 0, 2, 4, 5, 9, 10 };
 int musLen = sizeof( mus ) / sizeof( int );
 
 inline int max( int a, int b ) {
