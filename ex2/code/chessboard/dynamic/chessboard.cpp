@@ -1,11 +1,9 @@
 #include <cstdio>
-#include <cmath>
-#include <vector>
 
 using namespace std;
 
 int checker[ 4 ];
-int mus[] = { 0, 2, 4, 5, 9, 10 };
+int mus[] = { 0, 1, 2, 4, 5, 8, 9, 10 };
 int musLen = sizeof( mus ) / sizeof( int );
 
 inline int max( int a, int b ) {
