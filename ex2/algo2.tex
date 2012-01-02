@@ -53,6 +53,35 @@
 \end{titlepage}
 
 \section*{Άσκηση 1}
+\selectlanguage{english}
+\begin{algorithm}[H]
+\caption{\textgreek{Άσκηση 1}}
+\begin{algorithmic}[1]
+\Procedure{Motorcycle}{$l, u, n, v, T$}
+	\For {$i \gets 1$ to $n$}
+		\State $A[ i ].u \gets u[ i ]$
+		\State $A[ i ].l \gets l[ i ]$
+		\State $A[ i ].i \gets i$
+	\EndFor
+	\State $A \gets $ sort $A$ by $u$
+	\State $S \gets \emptyset$
+	\For {$i \gets 1$ to $n$}
+		\State $speed \gets v + A[ i ].u$
+		\State $t \gets \frac{A[ i ].l}{speed}$
+		\If {$T > t$}
+			\State $S \gets S \cup \{ ( A[ i ].i, A[ i ].l ) \}$
+			\State $T \gets T - t$
+		\Else
+			\State $S \gets S \cup \{ ( A[ i ].i, T * speed ) \}$
+			\State $break$
+		\EndIf
+	\EndFor
+	\State \Return $S$
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+\selectlanguage{greek}
+
 \section*{Άσκηση 2}
 \section*{Άσκηση 3}
 \subsection*{α)}
