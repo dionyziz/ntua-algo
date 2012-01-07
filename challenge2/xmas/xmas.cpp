@@ -7,7 +7,7 @@
 
 using namespace std;
 
-const int INF = 123456789;
+const int INF = 987654321;
 const float EPSILON = 0.00001;
 
 typedef pair< int, int > point;
@@ -27,7 +27,7 @@ inline int norm( point P, point Q ) {
 }
 
 inline float fnorm( point P, fpoint Q ) {
-    return abs( ( float )P.first - Q.first ) + abs( ( float )P.second - Q.second );
+    return fabs( ( float )P.first - Q.first ) + fabs( ( float )P.second - Q.second );
 }
 
 int dynamic() {
