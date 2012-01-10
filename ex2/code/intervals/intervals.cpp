@@ -11,9 +11,11 @@ struct interval {
 int N;
 interval A[ 100000 ];
 
-bool cover( s1, f1, s2, f2 ) {
-    return ( s1 < s2 && f1 > s2 )
-        || ( s2 < s1 && f2 > s1 );
+bool cover( int i, int j ) {
+    int s1 = A[ i ].s, s2 = A[ j ].s, f1 = A[ i ].f, f2 = A[ j ].f;
+
+    return ( s1 <= s2 && f1 > s2 )
+        || ( s2 <= s1 && f2 > s1 );
 }
 
 int cmp( const void* a, const void* b ) {
@@ -21,7 +23,7 @@ int cmp( const void* a, const void* b ) {
 }
 
 int main() {
-    int cost;
+    int cost = 0;
 
     scanf( "%i", &N );
     for ( int i = 0; i < N; ++i ) {
@@ -32,13 +34,20 @@ int main() {
     qsort( A, N, sizeof( interval ), cmp );
 
     for ( int i = 0; i < N; ++i ) {
-        // printf( "%i %i\n", A[ i ].s, A[ i ].f );
-        for ( int j = N - 1; j >= 0; --j ) {
-            if ( cover( i, j ) ) {
-                for ( int k = 0; k <= N; ++k ) {
-                    A[ k ].covered = true;
+        if ( !A[ i ].covered ) {
+            for ( int j = N - 1; j >= 0; --j ) {
+                if ( cover( i, j ) ) {
+                    // j... I choose you!
+                    // printf( "Choosing %i.\n", j );
+                    ++cost;
+                    for ( int k = 0; k < N; ++k ) {
+                        // IT'S SUPER EFFECTIVE!
+                        if ( cover( j, k ) ) {
+                            A[ k ].covered = true;
+                        }
+                    }
+                    break;
                 }
-                break;
             }
         }
     }
