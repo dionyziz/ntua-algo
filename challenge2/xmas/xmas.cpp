@@ -8,6 +8,8 @@ using namespace std;
 
 #define MIN(a,b)  ((a) < (b) ? (a) : (b))
 
+const int NUM_K_MEANS_ITERATIONS = 10;
+const int NUM_K_MEANS_REPEAT = 10;
 const int INF = 987654321;
 const float EPSILON = 0.00001;
 
@@ -122,9 +124,10 @@ int kMeans() {
         --P[ i ][ 0 ]; --P[ i ][ 1 ];
         // randomly partition the dataset
         cluster[ i ] = rand() % 2 == 1;
+        printf( "%i-th point is ( %i, %i ) assigned to cluster %c.\n", i + 1, P[ i ][ 0 ], P[ i ][ 1 ], cluster[ i ]? 'B': 'A' );
     }
 
-    for ( int iteration = 0; iteration < 10; ++iteration ) {
+    for ( int iteration = 0; iteration < NUM_K_MEANS_ITERATIONS; ++iteration ) {
         // update step: calculate new means
         means[ 0 ][ 0 ] = 0.0;
         means[ 0 ][ 1 ] = 0.0;
@@ -132,12 +135,15 @@ int kMeans() {
         means[ 1 ][ 1 ] = 0.0;
         assignCounts[ 0 ] = assignCounts[ 1 ] = 0;
         for ( int i = 0; i < N; ++i ) {
-            printf( "Means in %i-th iteration after %i-th point: A = ( %2.2f, %2.2f ), B = ( %2.2f, %2.2f ).\n",
-                    iteration, i, means[ 0 ][ 0 ], means[ 0 ][ 1 ], means[ 1 ][ 0 ], means[ 1 ][ 1 ] );
+            printf( "Means in %i-th iteration before %i-th point: A = ( %2.2f, %2.2f ), B = ( %2.2f, %2.2f ).\n",
+                    iteration, i, means[ 0 ][ 0 ] + 1.0, means[ 0 ][ 1 ] + 1.0, means[ 1 ][ 0 ] + 1.0, means[ 1 ][ 1 ] + 1.0 );
             means[ cluster[ i ] ][ 0 ] += ( float )P[ i ][ 0 ];
             means[ cluster[ i ] ][ 1 ] += ( float )P[ i ][ 1 ];
+            printf( "Means in %i-th iteration after %i-th point: A = ( %2.2f, %2.2f ), B = ( %2.2f, %2.2f ).\n",
+                    iteration, i, means[ 0 ][ 0 ] + 1.0, means[ 0 ][ 1 ] + 1.0, means[ 1 ][ 0 ] + 1.0, means[ 1 ][ 1 ] + 1.0 );
             ++assignCounts[ cluster[ i ] ];
         }
+        printf( "%i points belong to cluster A; %i points belong to cluster B.\n", assignCounts[ 0 ], assignCounts[ 1 ] );
         if ( assignCounts[ 0 ] == 0 ) {
             // remove cluster 0
             means[ 0 ][ 0 ] = -1.0;
@@ -146,7 +152,7 @@ int kMeans() {
             means[ 0 ][ 0 ] /= ( float )assignCounts[ 0 ];
             means[ 0 ][ 1 ] /= ( float )assignCounts[ 0 ];
         }
-        if ( assignCounts[ 0 ] == 1 ) {
+        if ( assignCounts[ 1 ] == 0 ) {
             // remove cluster 1
             means[ 1 ][ 0 ] = -1.0;
         }
@@ -155,7 +161,7 @@ int kMeans() {
             means[ 1 ][ 1 ] /= ( float )assignCounts[ 1 ];
         }
         printf( "Means in %i-th iteration: A = ( %2.2f, %2.2f ), B = ( %2.2f, %2.2f ).\n",
-                iteration, means[ 0 ][ 0 ], means[ 0 ][ 1 ], means[ 1 ][ 0 ], means[ 1 ][ 1 ] );
+                iteration, means[ 0 ][ 0 ] + 1.0, means[ 0 ][ 1 ] + 1.0, means[ 1 ][ 0 ] + 1.0, means[ 1 ][ 1 ] + 1.0 );
 
         // assignment step: assign each data point to the cluster whose mean it's closest to
         for ( int i = 0; i < N; ++i ) {
@@ -179,7 +185,10 @@ int kMeans() {
         B[ 0 ] = T[ 0 ];
         B[ 1 ] = T[ 1 ];
     }
-    printf( "Cluster centers at A = ( %i, %i ), B = ( %i, %i ).\n", means[ 0 ][ 0 ], means[ 0 ][ 1 ], means[ 1 ][ 0 ], means[ 1 ][ 1 ] );
+    printf(
+        "Cluster centers at A = ( %2.2f, %2.2f ), B = ( %2.2f, %2.2f ).\n",
+        means[ 0 ][ 0 ] + 1.0, means[ 0 ][ 1 ] + 1.0, means[ 1 ][ 0 ] + 1.0, means[ 1 ][ 1 ] + 1.0
+    );
     cost = 0;
     for ( int i = 0; i < N; ++i ) {
         // calculate the cost of travel assigning each point to the agent
@@ -211,16 +220,21 @@ int main() {
     --A[ 0 ]; --A[ 1 ];
     --B[ 0 ]; --B[ 1 ];
 
-    if ( R > 10 || C > 10 ) {
+    // if ( R > 10 || C > 10 ) {
         // dynamic programming is too slow, so use a k-means heuristic in O( N )
         // printf( "Using k-means algorithm.\n" );
-        printf( "%i\n", kMeans() );
-    }
-    else {
-        // dynamic programming will work fast enough for given data in O( RCN )
-        // printf( "Using dynamic programming algorithm.\n" );
-        printf( "%i\n", dynamic() );
-    }
+        int cost = INF;
+
+        for ( int i = 0; i < NUM_K_MEANS_REPEAT; ++i ) {
+            cost = MIN( cost, kMeans() );
+        }
+        printf( "%i\n", cost );
+  //  }
+  //  else {
+  //      // dynamic programming will work fast enough for given data in O( RCN )
+  //      // printf( "Using dynamic programming algorithm.\n" );
+  //      printf( "%i\n", dynamic() );
+  //  }
 
     return 0;
 }
