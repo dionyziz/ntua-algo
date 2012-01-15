@@ -16,6 +16,7 @@ const float EPSILON = 0.00001;
 int N, R, C;
 int A[ 2 ], B[ 2 ];
 int J[ 2 ][ 2 ][ 10 ][ 10 ];
+int P[ 100010 ][ 2 ];
 
 inline int norm( int P[ 2 ], int Q[ 2 ] ) {
     return abs( P[ 0 ] - Q[ 0 ] ) + abs( P[ 1 ] - Q[ 1 ] );
@@ -111,121 +112,152 @@ int dynamic() {
     return cost;
 }
 
+void readPoints() {
+    for ( int i = 0; i < N; ++i ) {
+        scanf( "%i %i", &P[ i ][ 0 ], &P[ i ][ 1 ] );
+        --P[ i ][ 0 ]; --P[ i ][ 1 ];
+    }
+}
+
 int kMeans() {
-    int P[ N ][ 2 ];
     vector< bool > cluster( N );
     int assignCounts[ 2 ];
     float means[ 2 ][ 2 ];
     int T[ 2 ];
-    int cost;
+    int originalA[ 2 ], originalB[ 2 ];
+    int cost, mincost = INF;
+    int min[ 2 ] = { INF, INF }, max[ 2 ] = { -1, -1 };
 
     for ( int i = 0; i < N; ++i ) {
-        scanf( "%i %i", &P[ i ][ 0 ], &P[ i ][ 1 ] );
-        --P[ i ][ 0 ]; --P[ i ][ 1 ];
-        // randomly partition the dataset
-        cluster[ i ] = rand() % 2 == 1;
-        printf( "%i-th point is ( %i, %i ) assigned to cluster %c.\n", i + 1, P[ i ][ 0 ], P[ i ][ 1 ], cluster[ i ]? 'B': 'A' );
+        if ( P[ i ][ 0 ] < min[ 0 ] ) {
+            min[ 0 ] = P[ i ][ 0 ];
+        }
+        if ( P[ i ][ 1 ] < min[ 1 ] ) {
+            min[ 1 ] = P[ i ][ 1 ];
+        }
+        if ( P[ i ][ 0 ] > max[ 0 ] ) {
+            max[ 0 ] = P[ i ][ 0 ];
+        }
+        if ( P[ i ][ 1 ] > max[ 1 ] ) {
+            max[ 1 ] = P[ i ][ 1 ];
+        }
     }
+    means[ 0 ][ 0 ] = rand() % ( max[ 0 ] - min[ 0 ] ) + min[ 0 ];
+    means[ 0 ][ 1 ] = rand() % ( max[ 1 ] - min[ 1 ] ) + min[ 1 ];
+    means[ 1 ][ 0 ] = rand() % ( max[ 0 ] - min[ 0 ] ) + min[ 0 ];
+    means[ 1 ][ 1 ] = rand() % ( max[ 1 ] - min[ 1 ] ) + min[ 1 ];
 
-    for ( int iteration = 0; iteration < NUM_K_MEANS_ITERATIONS; ++iteration ) {
-        // update step: calculate new means
-        means[ 0 ][ 0 ] = 0.0;
-        means[ 0 ][ 1 ] = 0.0;
-        means[ 1 ][ 0 ] = 0.0;
-        means[ 1 ][ 1 ] = 0.0;
-        assignCounts[ 0 ] = assignCounts[ 1 ] = 0;
-        for ( int i = 0; i < N; ++i ) {
-            printf( "Means in %i-th iteration before %i-th point: A = ( %2.2f, %2.2f ), B = ( %2.2f, %2.2f ).\n",
-                    iteration, i, means[ 0 ][ 0 ] + 1.0, means[ 0 ][ 1 ] + 1.0, means[ 1 ][ 0 ] + 1.0, means[ 1 ][ 1 ] + 1.0 );
-            means[ cluster[ i ] ][ 0 ] += ( float )P[ i ][ 0 ];
-            means[ cluster[ i ] ][ 1 ] += ( float )P[ i ][ 1 ];
-            printf( "Means in %i-th iteration after %i-th point: A = ( %2.2f, %2.2f ), B = ( %2.2f, %2.2f ).\n",
-                    iteration, i, means[ 0 ][ 0 ] + 1.0, means[ 0 ][ 1 ] + 1.0, means[ 1 ][ 0 ] + 1.0, means[ 1 ][ 1 ] + 1.0 );
-            ++assignCounts[ cluster[ i ] ];
-        }
-        printf( "%i points belong to cluster A; %i points belong to cluster B.\n", assignCounts[ 0 ], assignCounts[ 1 ] );
-        if ( assignCounts[ 0 ] == 0 ) {
-            // remove cluster 0
-            means[ 0 ][ 0 ] = -1.0;
-        }
-        else {
-            means[ 0 ][ 0 ] /= ( float )assignCounts[ 0 ];
-            means[ 0 ][ 1 ] /= ( float )assignCounts[ 0 ];
-        }
-        if ( assignCounts[ 1 ] == 0 ) {
-            // remove cluster 1
-            means[ 1 ][ 0 ] = -1.0;
-        }
-        else {
-            means[ 1 ][ 0 ] /= ( float )assignCounts[ 1 ];
-            means[ 1 ][ 1 ] /= ( float )assignCounts[ 1 ];
-        }
-        printf( "Means in %i-th iteration: A = ( %2.2f, %2.2f ), B = ( %2.2f, %2.2f ).\n",
-                iteration, means[ 0 ][ 0 ] + 1.0, means[ 0 ][ 1 ] + 1.0, means[ 1 ][ 0 ] + 1.0, means[ 1 ][ 1 ] + 1.0 );
+    originalA[ 0 ] = A[ 0 ];
+    originalA[ 1 ] = A[ 1 ];
+    originalB[ 0 ] = B[ 0 ];
+    originalB[ 1 ] = B[ 1 ];
+    for ( int reinitialization = 0; reinitialization < NUM_K_MEANS_REPEAT; ++reinitialization ) {
+        for ( int iteration = 0; iteration < NUM_K_MEANS_ITERATIONS; ++iteration ) {
+            // assignment step: assign each data point to the cluster whose mean it's closest to
+            for ( int i = 0; i < N; ++i ) {
+                if ( ( fnorm( P[ i ], means[ 0 ] ) > fnorm( P[ i ], means[ 1 ] )
+                       || means[ 0 ][ 0 ] + 1 < EPSILON )
+                     && means[ 1 ][ 0 ] + 1 > EPSILON ) {
+                    cluster[ i ] = 1;
+                }
+                else {
+                    cluster[ i ] = 0;
+                }
+            }
 
-        // assignment step: assign each data point to the cluster whose mean it's closest to
-        for ( int i = 0; i < N; ++i ) {
-            if ( ( fnorm( P[ i ], means[ 0 ] ) > fnorm( P[ i ], means[ 1 ] )
-                   || means[ 0 ][ 0 ] + 1 < EPSILON )
-                 && means[ 1 ][ 0 ] + 1 > EPSILON ) {
-                cluster[ i ] = 1;
+            // update step: calculate new means
+            means[ 0 ][ 0 ] = 0.0;
+            means[ 0 ][ 1 ] = 0.0;
+            means[ 1 ][ 0 ] = 0.0;
+            means[ 1 ][ 1 ] = 0.0;
+            assignCounts[ 0 ] = assignCounts[ 1 ] = 0;
+            for ( int i = 0; i < N; ++i ) {
+               // printf( "Means in %i-th iteration before %i-th point: A = ( %2.2f, %2.2f ), B = ( %2.2f, %2.2f ), P = ( %i, %i ).\n",
+               //         iteration, i, means[ 0 ][ 0 ] + 1.0, means[ 0 ][ 1 ] + 1.0, means[ 1 ][ 0 ] + 1.0, means[ 1 ][ 1 ] + 1.0, P[ i ][ 0 ], P[ i ][ 1 ] );
+                means[ cluster[ i ] ][ 0 ] += ( float )P[ i ][ 0 ];
+                means[ cluster[ i ] ][ 1 ] += ( float )P[ i ][ 1 ];
+               // printf( "Means in %i-th iteration after %i-th point: A = ( %2.2f, %2.2f ), B = ( %2.2f, %2.2f ).\n",
+               //         iteration, i, means[ 0 ][ 0 ] + 1.0, means[ 0 ][ 1 ] + 1.0, means[ 1 ][ 0 ] + 1.0, means[ 1 ][ 1 ] + 1.0 );
+                ++assignCounts[ cluster[ i ] ];
+            }
+            // printf( "%i points belong to cluster A; %i points belong to cluster B.\n", assignCounts[ 0 ], assignCounts[ 1 ] );
+            if ( assignCounts[ 0 ] == 0 ) {
+                // remove cluster 0
+                means[ 0 ][ 0 ] = -1.0;
             }
             else {
-                cluster[ i ] = 0;
+                means[ 0 ][ 0 ] /= ( float )assignCounts[ 0 ];
+                means[ 0 ][ 1 ] /= ( float )assignCounts[ 0 ];
+            }
+            if ( assignCounts[ 1 ] == 0 ) {
+                // remove cluster 1
+                means[ 1 ][ 0 ] = -1.0;
+            }
+            else {
+                means[ 1 ][ 0 ] /= ( float )assignCounts[ 1 ];
+                means[ 1 ][ 1 ] /= ( float )assignCounts[ 1 ];
+            }
+            // printf( "Means in %i-th iteration: A = ( %2.2f, %2.2f ), B = ( %2.2f, %2.2f ).\n",
+            //         iteration, means[ 0 ][ 0 ] + 1.0, means[ 0 ][ 1 ] + 1.0, means[ 1 ][ 0 ] + 1.0, means[ 1 ][ 1 ] + 1.0 );
+
+        }
+        if ( fnorm( A, means[ 0 ] ) + fnorm( B, means[ 1 ] )
+           > fnorm( A, means[ 1 ] ) + fnorm( B, means[ 0 ] ) ) {
+            // assign initial points optimally to cluster centers
+            T[ 0 ] = A[ 0 ];
+            T[ 1 ] = A[ 1 ];
+            A[ 0 ] = B[ 0 ];
+            A[ 1 ] = B[ 1 ];
+            B[ 0 ] = T[ 0 ];
+            B[ 1 ] = T[ 1 ];
+        }
+        // printf(
+        //     "Cluster centers at A = ( %2.2f, %2.2f ), B = ( %2.2f, %2.2f ).\n",
+        //     means[ 0 ][ 0 ] + 1.0, means[ 0 ][ 1 ] + 1.0, means[ 1 ][ 0 ] + 1.0, means[ 1 ][ 1 ] + 1.0
+        // );
+        cost = 0;
+        for ( int i = 0; i < N; ++i ) {
+            // calculate the cost of travel assigning each point to the agent
+            // whose cluster it was assigned to
+            if ( cluster[ i ] ) {
+                // printf( "%i (%i, %i) belongs to B.\n", i + 1, P[ i ][ 0 ], P[ i ][ 1 ] );
+                cost += norm( B, P[ i ] );
+                B[ 0 ] = P[ i ][ 0 ];
+                B[ 1 ] = P[ i ][ 1 ];
+            }
+            else {
+                // printf( "%i (%i, %i) belongs to A.\n", i + 1, P[ i ][ 0 ], P[ i ][ 1 ] );
+                cost += norm( A, P[ i ] );
+                A[ 0 ] = P[ i ][ 0 ];
+                A[ 1 ] = P[ i ][ 1 ];
             }
         }
+        // printf( "Improving kMeans cost: %i -> %i\n", mincost, cost );
+        mincost = MIN( mincost, cost );
+        A[ 0 ] = originalA[ 0 ];
+        A[ 1 ] = originalA[ 1 ];
+        B[ 0 ] = originalB[ 0 ];
+        B[ 1 ] = originalB[ 1 ];
     }
-    if ( fnorm( A, means[ 0 ] ) + fnorm( B, means[ 1 ] )
-       > fnorm( A, means[ 1 ] ) + fnorm( B, means[ 0 ] ) ) {
-        // assign initial points optimally to cluster centers
-        T[ 0 ] = A[ 0 ];
-        T[ 1 ] = A[ 1 ];
-        A[ 0 ] = B[ 0 ];
-        A[ 1 ] = B[ 1 ];
-        B[ 0 ] = T[ 0 ];
-        B[ 1 ] = T[ 1 ];
-    }
-    printf(
-        "Cluster centers at A = ( %2.2f, %2.2f ), B = ( %2.2f, %2.2f ).\n",
-        means[ 0 ][ 0 ] + 1.0, means[ 0 ][ 1 ] + 1.0, means[ 1 ][ 0 ] + 1.0, means[ 1 ][ 1 ] + 1.0
-    );
-    cost = 0;
-    for ( int i = 0; i < N; ++i ) {
-        // calculate the cost of travel assigning each point to the agent
-        // whose cluster it was assigned to
-        if ( cluster[ i ] ) {
-            // printf( "%i belongs to B.\n", i + 1 );
-            cost += norm( B, P[ i ] );
-            B[ 0 ] = P[ i ][ 0 ];
-            B[ 1 ] = P[ i ][ 1 ];
-        }
-        else {
-            // printf( "%i belongs to A.\n", i + 1 );
-            cost += norm( A, P[ i ] );
-            A[ 0 ] = P[ i ][ 0 ];
-            A[ 1 ] = P[ i ][ 1 ];
-        }
-    }
-    return cost;
+
+    return mincost;
 }
 
 int greedy() {
-    int costA, costB, P[ 2 ];
+    int cost = 0, costA, costB;
 
     for ( int i = 0; i < N; ++i ) {
-        scanf( "%i %i", &P[ 0 ], &P[ 1 ] );
-        --P[ i ][ 0 ]; --P[ i ][ 1 ];
         costA = norm( A, P[ i ] );
         costB = norm( B, P[ i ] );
         if ( costA < costB ) {
             cost += costA;
-            A[ 0 ] = P[ 0 ];
-            A[ 1 ] = P[ 1 ];
+            A[ 0 ] = P[ i ][ 0 ];
+            A[ 1 ] = P[ i ][ 1 ];
         }
         else {
             cost += costB;
-            B[ 0 ] = P[ 0 ];
-            B[ 1 ] = P[ 1 ];
+            B[ 0 ] = P[ i ][ 0 ];
+            B[ 1 ] = P[ i ][ 1 ];
         }
     }
 
@@ -243,15 +275,18 @@ int main() {
     --A[ 0 ]; --A[ 1 ];
     --B[ 0 ]; --B[ 1 ];
 
-    if ( R > 10 || C > 10 ) {
+    if ( R > 0 || C > 0 ) {
         // dynamic programming is too slow, so use a k-means and greedy heuristics in O( N )
         // printf( "Using k-means and greedy algorithms.\n" );
-        int cost = INF;
+        int cost;
+        int greedyCost, kMeansCost;
 
-        for ( int i = 0; i < NUM_K_MEANS_REPEAT; ++i ) {
-            cost = MIN( cost, kMeans() );
-        }
-        cost = MIN( cost, greedy() );
+        readPoints();
+        kMeansCost = kMeans();
+        greedyCost = greedy();
+        printf( "Greedy cost = %i\n", greedyCost );
+        printf( "kMeans cost = %i\n", kMeansCost );
+        cost = MIN( greedyCost, kMeansCost );
         printf( "%i\n", cost );
     }
     else {
