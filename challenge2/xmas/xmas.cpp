@@ -8,8 +8,8 @@ using namespace std;
 
 #define MIN(a,b)  ((a) < (b) ? (a) : (b))
 
-const int NUM_K_MEANS_ITERATIONS = 10;
-const int NUM_K_MEANS_REPEAT = 10;
+int NUM_K_MEANS_ITERATIONS = 13;
+int NUM_K_MEANS_REPEAT = 3;
 const int INF = 987654321;
 const float EPSILON = 0.00001;
 
@@ -45,7 +45,7 @@ int printJ( int parity ) {
 
 int dynamic() {
     int P[ 2 ][ 2 ];
-    bool parity = false;
+    int parity = 0;
     int cost;
 
     scanf( "%i %i", &P[ parity ][ 0 ], &P[ parity ][ 1 ] );
@@ -65,7 +65,7 @@ int dynamic() {
 
     for ( int i = 1; i < N; ++i ) {
         // printf( "J after iteration %i: ", i + 1 );
-        parity = !parity;
+        parity = 1 - parity;
         scanf( "%i %i", &P[ parity ][ 0 ], &P[ parity ][ 1 ] );
         --P[ parity ][ 0 ]; --P[ parity ][ 1 ];
         memset( J[ parity ], 120, 2 * 10 * 10 * sizeof( int ) );
@@ -275,7 +275,7 @@ int main() {
     --A[ 0 ]; --A[ 1 ];
     --B[ 0 ]; --B[ 1 ];
 
-    if ( R > 0 || C > 0 ) {
+    if ( R > 10 || C > 10 ) {
         // dynamic programming is too slow, so use a k-means and greedy heuristics in O( N )
         // printf( "Using k-means and greedy algorithms.\n" );
         int cost;
@@ -284,8 +284,8 @@ int main() {
         readPoints();
         kMeansCost = kMeans();
         greedyCost = greedy();
-        printf( "Greedy cost = %i\n", greedyCost );
-        printf( "kMeans cost = %i\n", kMeansCost );
+        // printf( "Greedy cost = %i\n", greedyCost );
+        // printf( "kMeans cost = %i\n", kMeansCost );
         cost = MIN( greedyCost, kMeansCost );
         printf( "%i\n", cost );
     }
