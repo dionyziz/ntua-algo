@@ -209,6 +209,29 @@ int kMeans() {
     return cost;
 }
 
+int greedy() {
+    int costA, costB, P[ 2 ];
+
+    for ( int i = 0; i < N; ++i ) {
+        scanf( "%i %i", &P[ 0 ], &P[ 1 ] );
+        --P[ i ][ 0 ]; --P[ i ][ 1 ];
+        costA = norm( A, P[ i ] );
+        costB = norm( B, P[ i ] );
+        if ( costA < costB ) {
+            cost += costA;
+            A[ 0 ] = P[ 0 ];
+            A[ 1 ] = P[ 1 ];
+        }
+        else {
+            cost += costB;
+            B[ 0 ] = P[ 0 ];
+            B[ 1 ] = P[ 1 ];
+        }
+    }
+
+    return cost;
+}
+
 int main() {
     // limits: 1 <= N <= 100,000
     //         1 <= R, C <= 10
@@ -220,21 +243,22 @@ int main() {
     --A[ 0 ]; --A[ 1 ];
     --B[ 0 ]; --B[ 1 ];
 
-    // if ( R > 10 || C > 10 ) {
-        // dynamic programming is too slow, so use a k-means heuristic in O( N )
-        // printf( "Using k-means algorithm.\n" );
+    if ( R > 10 || C > 10 ) {
+        // dynamic programming is too slow, so use a k-means and greedy heuristics in O( N )
+        // printf( "Using k-means and greedy algorithms.\n" );
         int cost = INF;
 
         for ( int i = 0; i < NUM_K_MEANS_REPEAT; ++i ) {
             cost = MIN( cost, kMeans() );
         }
+        cost = MIN( cost, greedy() );
         printf( "%i\n", cost );
-  //  }
-  //  else {
-  //      // dynamic programming will work fast enough for given data in O( RCN )
-  //      // printf( "Using dynamic programming algorithm.\n" );
-  //      printf( "%i\n", dynamic() );
-  //  }
+    }
+    else {
+        // dynamic programming will work fast enough for given data in O( RCN )
+        // printf( "Using dynamic programming algorithm.\n" );
+        printf( "%i\n", dynamic() );
+    }
 
     return 0;
 }
