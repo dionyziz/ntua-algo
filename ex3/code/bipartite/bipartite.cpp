@@ -9,7 +9,7 @@ bool UNDEFINED = 2;
 vector< int > colors;
 vector< list< int > > E;
 
-bool BFS( int s, bool color ) {
+bool DFS( int s, bool color ) {
     if ( colors[ s ] != UNDEFINED ) {
         if ( colors[ s ] != color ) {
             // not bipartite graph
@@ -19,7 +19,7 @@ bool BFS( int s, bool color ) {
     }
     colors[ s ] = color;
     for ( list< int >::iterator it = E[ s ].begin(); it != E[ s ].end(); ++it ) {
-        BFS( *it, !color );
+        DFS( *it, !color );
     }
     return true;
 }
@@ -40,7 +40,7 @@ int main() {
         E[ u ].push_back( v );
     }
 
-    if ( BFS( 0, 0 ) ) {
+    if ( DFS( 0, 0 ) ) {
         printf( "0\n" );
     }
     else {
