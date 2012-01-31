@@ -3,14 +3,18 @@
 
 using namespace std;
 
-struct edge {
+struct Edge {
     int from;
     int to;
     int weight;
 };
 
-edge makeEdge( int u, int v, int w ) {
-    edge ret;
+struct Node {
+    Node* parent;
+};
+
+Edge makeEdge( int u, int v, int w ) {
+    Edge ret;
 
     ret.from = u;
     ret.to = v;
@@ -19,15 +23,26 @@ edge makeEdge( int u, int v, int w ) {
     return ret;
 }
 
+int cmp( const void* a, const void* b ) {
+    return ( ( Edge* )a )->weight - ( ( Edge* )b )->weight;
+}
+
 int main() {
-    priority_queue< edge > E;
+    Edge E[ M ];
+    Node V[ N ];
 
     scanf( "%i %i", &N, &M );
     scanf( "%i %i", &u, &v, &w );
 
-    for ( i = 0; i < M; ++i ) {
-        E.push( makeEdge( u, v, w ) );
+    for ( i = 0; i < N; ++i ) {
+        V[ i ].parent = V[ i ];
     }
+
+    for ( i = 0; i < M; ++i ) {
+        E[ i ] = makeEdge( u, v, w );
+    }
+
+    qsort( E, N, sizeof( Edge ), cmp );
 
     return 0;
 }
