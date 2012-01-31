@@ -1,4 +1,4 @@
-\documentclass[11pt,a4paper]{book}
+\documentclass[11pt,a4paper,oneside]{report}
 \usepackage[english,greek]{babel}
 \usepackage[utf8x]{inputenc}
 \usepackage[noend]{algpseudocode}
@@ -12,6 +12,7 @@
 \newcommand{\defeq}{\overset{\underset{\mathrm{def}}{}}{=}}
 \makeatletter
 \DeclareMathOperator*{\argmin}{arg\,min}
+
 \makeatother
 \raggedbottom
 \begin{document}
@@ -56,7 +57,17 @@
 \end{titlepage}
 
 \section*{Άσκηση 1}
-Για να ελέγξουμε αν ο γράφος είναι διμερής, χρωματίζουμε μία ακμή αυθαίρετα και στη συνέχεια για κάθε χρωματισμένη ακμή χρωματίζουμε τους γείτονές της με το αντίθετο χρώμα έως ότου ολοκληρωθεί η διαδικασία ή καταλήξουμε σε αντίφαση.
+Το πρόβλημα μοντελοποιείται αν το αντιπροσωπεύσουμε με έναν γράφο στον οποίο κάθε ταινία είναι ένα κόμβος και κάθε συνδρομητής είναι μία ακμή ανάμεσα στις δύο ταινίες που θέλει να δει. Στη συνέχεια αρκεί να χρωματίσουμε το γράφο με δύο χρώματα έτσι ώστε καμία ακμή να μην πατάει στο ίδιο χρώμα δύο φορές· δηλαδή μένει να ελέγξουμε αν ο γράφος μας είναι διμερής.
+
+Για να ελέγξουμε αν ο γράφος είναι διμερής, χρωματίζουμε μία κορυβή αυθαίρετα και στη συνέχεια για κάθε χρωματισμένη κορυφή χρωματίζουμε τους γείτονές της με το αντίθετο χρώμα έως ότου ολοκληρωθεί η διαδικασία ή καταλήξουμε σε αντίφαση. 
+Αυτό πρέπει να το επαναλάβουμε για κάθε συνεκτική συνιστώσα του γράφου μας.
+
+\begin{lemma}
+Ο αλγόριθμος ελέγχου διμερούς γράφου είναι ορθός.
+\end{lemma}
+\begin{proof}
+Η ορθότητα του αλγορίθμου προκύπτει ως εξής. Ο αρχικός κόμβος κάθε συνιστώσας σε έναν έγκυρο διμερή διαχωρισμό, αν υπάρχει, μπορεί να χρωματιστεί αυθαίρετα. Στη συνέχεια, αν ο γράφος μας είναι πραγματικά διμερής, η αναζήτηση στη συγκεκριμένη συνιστώσα θα πρέπει να χρωματίσει με σωστό τρόπο όλους τους κόμβους χωρίς να αποτύχει. Άρα αν ο γράφος είναι πραγματικά διμερής, τότε ο χρωματισμός θα πρέπει να είναι επιτυχής. Αντίστροφα, αν έχουμε επιτυχή χρωματισμό, και επειδή κάθε χρώμα είναι αμετάκλητο, τότε θα έχουμε ελέγξει όλες τις ακμές για αντιφάσεις και καμία δεν θα έχει βρεθεί. Συνεπώς ο γράφος θα είναι διμερής. Αυτό ισχύει για κάθε συνεκτική συνιστώστα του γράφου και έτσι ολοκληρώνει την απόδειξη.
+\end{proof}
 
 \selectlanguage{english}
 \begin{algorithm}[H]
@@ -64,24 +75,31 @@
 \begin{algorithmic}[1]
 
 \Procedure{Bipartite}{$V, E$}
+    \State $unexplored \gets V$
     \For {$v \in V$}
         \State $color[ v ] \gets \emptyset$
     \EndFor
-    \State $q \gets \{ V[ 0 ] \}$
-    \State $color[ V[ 0 ] ] \gets \top$
-    \While {$q \neq \emptyset$}
-        \State $s \gets \textlatin{remove and return an element of q}$
-        \State $paint \gets \lnot color[ s ]$
-        \For {$\text{neighbour } t \text{ of } s$}
-            \If {$color[ t ] \neq \emptyset$}
-                \If {$color[ t ] \neq paint$}
-                    \State \Return $\bot$
+    \While {$unexplored \neq \emptyset$}
+    	\State $u \gets \text{an item of } unexplored$
+        \State $unexplored \gets unexplored \setminus \{u\}$
+        \State $q \gets \Call{EmptyStack}$
+        \State $\Call{Push}{q, u}$
+        \State $color[ u ] \gets \top$
+        \While {$q \neq \emptyset$}
+            \State $s \gets \Call{Pop}{q}$
+            \State $unexplored \gets unexplored \setminus \{s\}$
+            \State $paint \gets \lnot color[ s ]$
+            \For {$\text{neighbour } t \text{ of } s$}
+                \If {$color[ t ] \neq \emptyset$}
+                    \If {$color[ t ] \neq paint$}
+                        \State \Return $\bot$
+                    \EndIf
+                \Else
+                    \State $color[ t ] \gets paint$
+                    \State $\Call{Push}{q, t}$
                 \EndIf
-            \Else
-                \State $color[ t ] \gets paint$
-                \State $q \gets q \cup \{ t \}$
-            \EndIf
-        \EndFor
+            \EndFor
+        \EndWhile
     \EndWhile
     \State \Return $\top$
 \EndProcedure
@@ -89,11 +107,13 @@
 \end{algorithm}
 \selectlanguage{greek}
 
+Ο χρόνος εκτέλεσης του αλγορίθμου θα είναι $O( |V| + |E| )$. Αυτό προκύπτει από το γεγονός ότι διασχίζουμε όλες τις ακμές του γράφου από το πολύ δύο φορές, μία για κάθε άκρη τους και άρα έχουμε $O( |E| )$, ενώ για κάθε συνιστώσα θα πρέπει να ξεκινήσουμε από κάποιον κόμβο της το οποίο κοστίζει $O( |V| )$.
+
 \section*{Άσκηση 2}
-Διασχίζουμε το γράφο χρησιμοποιώντας \textlatin{BFS} και διατηρούμε κάθε φορά το πλήθος των τρόπων με τους οποίους φτάσαμε σε κάθε κόμβο.
+Διασχίζουμε το γράφο χρησιμοποιώντας αναζήτηση κατά πλάτος και διατηρούμε κάθε φορά το πλήθος των τρόπων με τους οποίους φτάσαμε σε κάθε κόμβο.
 
 \selectlanguage{english}
-\begin{algorithm}[H]
+\begin{algorithm}[H]	
 \caption{\textgreek{Άσκηση 2}}
 \begin{algorithmic}[1]
 
@@ -126,11 +146,15 @@
 \end{algorithm}
 \selectlanguage{greek}
 
+Η πολυπλοκότητα του αλγορίθμου είναι η ίδια με αυτή της αναζήτησης κατά πλάτος, δηλαδή $O( |E| )$.
+
 \section*{Άσκηση 3}
 \subsection*{(α)}
 Ο γράφος της άσκησης 4 με $L = \{ C \}$ είναι ένα παράδειγμα γράφου που έχει διαφορετικό ΕΣΔ υπό περιορισμούς.
 
 \subsection*{(β)}
+Για κάθε κόμβο για τον οποίο υπάρχει απαίτηση να είναι φύλλο κρατάμε την φθηνότερη ακμή που το συνδέει με κάποιον κόμβο που δεν υπάρχει απαίτηση να είναι φύλλο. Στη συνέχεια βρίσκουμε το ΕΣΔ κατά τα γνωστά.
+
 \selectlanguage{english}
 \begin{algorithm}[H]
 \caption{\textgreek{Άσκηση 3}}
@@ -163,6 +187,8 @@
 \end{algorithmic}
 \end{algorithm}
 \selectlanguage{greek}
+
+Η πολυπλοκότητα του αλγορίθμου προκύπτει ως εξής. Για κάθε ακμή ενημερώνουμε την βέλτιστη ακμή που είναι γνωστή για κάποιο φύλλο, αν συνδέεται με κάποιο, σε σταθερό χρόνο. Ο συνολικός χρόνο γι' αυτό απαιτεί να περάσουμε από όλες τις ακμές σε συνολικό χρόνο $O( |E| )$. Ο αλγόριθμος του \text{Prim} τρέχει σε $O(|E| + |V|\log|V|)$ που είναι και άνω φράγμα για όλο τον αλγόριθμο.
 
 \section*{Άσκηση 4}
 \subsection*{(α)}
@@ -222,6 +248,49 @@
 \end{proof}
 
 \subsection*{(δ)}
+Ξεκινάμε υπολογίζοντας ένα ΕΣΔ του γράφου. Στη συνέχεια ελέγχουμε αν υπάρχει εναλλακτικό ΕΣΔ εργαζομενοι ως εξής. Κατασκευάζουμε έναν πίνακα που δείχνει τη μέγιστη ακμή του μονοπατιού ανάμεσα σε οποιουσδήποτε δύο κόμβους του ΕΣΔ. Τέλος, ελέγχουμε για κάθε ακμή του αρχικού γράφου $(u, v)$ αν μπορεί να αντικαταστήσει κάποια ακμή του ΕΣΔ και αυτό να παραμείνει ελάχιστο. Αυτό γίνεται πλέον εύκολα ελέγχοντας την τιμή της μέγιστης ακμής στο μονοπάτι από το $u$ στο $v$ πάνω στον αρχικό γράφο.
+
+Η ορθότητα του αλγορίθμου προκύπτει από το παρακάτω λήμμα.
+
+\begin{lemma}
+Ένα ΕΣΔ $T$ είναι μοναδικό ανν $\forall (u, v) \in E \setminus T: w( u, v ) > \max(p(u, v))$ όπου $p(u, v)$ το μονοπάτι από την κορυφή $u$ στην κορυφή $v$ στο δέντρο $T$.
+\end{lemma}
+
+\selectlanguage{english}
+\begin{algorithm}[H]
+\caption{\textgreek{Άσκηση 4}}
+\begin{algorithmic}[1]
+
+\Procedure{UniqueMST}{$V, E, w$}
+	\State $T \gets \Call{Prim}{V, E, w}$
+	\For {$(u, v) \in V^2$}
+		\State $dist[ u ][ v ] \gets \infty$
+	\EndFor
+	\For {$v \in V$}
+		\State $q \gets \Call{EmptyStack}$
+		\State $\Call{Push}{q,v}$
+		\While {$\lnot \Call{Empty}{q}$}
+			\State $u \gets \Call{Pop}{q}$
+			\For {$\text{neighbour } r \text{ of } u \text{ in } T$}
+				\If {$dist[ v ][ u ] = \infty$}
+					\State $dist[ v ][ u ] \gets \max( dist[ v ][ r ], w( r, u ) )$
+					\State $\Call{Push}{q,u}$
+				\EndIf
+			\EndFor
+		\EndWhile
+	\EndFor
+	\For {$(u, v) \in E \setminus T$}
+		\If {$w(u, v) = dist[ u ][ v ]$}
+			\State \Return $\bot$
+		\EndIf
+	\EndFor
+	\State \Return $\top$
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+\selectlanguage{greek}
+
+Ο αλγόριθμος του \textlatin{Prim} τρέχει σε $O( |V|^2 )$. Η κατασκευή του πίνακα μέγιστων ακμών ανά μονοπάτι μπορεί να γίνει σε χρόνο $O( |V|^2 )$ χρησιμοποιώντας αναζήτηση κατά πλάτος πάνω στο δέντρο. Η αναζήτηση ακμής αντικατάστασης γίνεται στη συνέχεια σε $O( |E| )$. Έτσι ο αλγόριθμος που προκύπτει είναι $O( |V|^2 )$.
 
 \section*{Άσκηση 5}
 \subsection*{(α)}
@@ -249,5 +318,39 @@
 \end{proof}
 
 \subsection*{(γ)}
+
+\selectlanguage{english}
+\begin{algorithm}[H]
+\caption{\textgreek{Άσκηση 5}}
+\begin{algorithmic}[1]
+
+\Procedure{ReverseKruskal}{$V, E, w$}
+	\State $E \gets \text{sort } E \text{ decreasingly by weight}$
+	\State $S \gets E$
+	\For {$e \in E$}
+		\If {$\lnot \Call{Bridge}{S, e}$}
+			\State $S \gets S \setminus \{ e \}$
+		\EndIf
+	\EndFor
+	\State \Return $S$
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+\selectlanguage{greek}
+
+Η υλοποίηση του \selectlanguage{english}$\Call{Bridge}{S, e}$\selectlanguage{greek} ελέγχει αν η $e$ είναι γέφυρα του $S$ και μπορεί να γίνει με διάφορους τρόπους. Ο απλούστερος τρόπος θα ήταν ένας αλγόριθμος αναζήτησης κατά βάθος ή κατά πλάτος που ελέγχει αν υπάρχει και άλλο μονοπάτι ανάμεσα στις δύο κορυφές που συνδέει η ακμή. Τότε η συνολική πολυπλοκότητα του αλγορίθμου είναι $O( E^2 )$. Αντικαθιστώντας τον έλεγχο για γέφυρες με κάποια πιο αποδοτική υλοποίηση (βλ. \cite{thorup00}) μπορούμε να πετύχουμε την αισθητά καλύτερη πολυπλοκότητα $ O(E \log E (\log \log E)^3) $.
+
+\begin{thebibliography}{9}
+
+\selectlanguage{english}
+
+\bibitem{thorup00}
+  Mikkel Thorup,
+  \emph{Near-optimal fully-dynamic graph connectivity}.
+  Addison Wesley, Massachusetts,
+  Proc. 32nd ACM Symposium on Theory of Computing,
+  2000.
+  
+\end{thebibliography}
 
 \end{document}
