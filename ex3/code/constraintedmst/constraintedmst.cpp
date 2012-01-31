@@ -47,6 +47,7 @@ int prim() {
     edge e;
     int w = 0;
 
+    // TODO: special case: N = 0
     s = 0;
     do {
         for ( list< edge >::iterator it = E[ s ].begin(); it != E[ s ].end(); ++it ) {
@@ -56,7 +57,7 @@ int prim() {
             e = q.top();
             q.pop();
         } while ( subgraph.find( e.to ) != subgraph.end() );
-        if ( subgraph.fidn( e.to ) != subgraph.end() ) {
+        if ( subgraph.find( e.to ) != subgraph.end() ) {
             s = e.to;
         }
         subgraph.insert( s );
@@ -71,10 +72,6 @@ int main() {
     list< edge > l;
 
     scanf( "%i %i %i", &N, &M, &Lsize );
-
-    // TODO: special case: N = 2; Lsize = 2; M = 1
-    // TODO: special case: N = 1; Lsize <= 1
-    // TODO: special case: N = 0
 
     for ( i = 0; i < N; ++i ) {
         E.push_back( l );

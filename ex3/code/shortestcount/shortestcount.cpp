@@ -40,6 +40,8 @@ int main() {
     }
 
     q.push( s );
+    V[ s ].distance = 0;
+    V[ s ].visited = 1;
     while ( !empty( q ) ) {
         u = q.top();
         if ( u == t ) {
@@ -47,12 +49,14 @@ int main() {
         }
         q.pop();
         for ( list< int >::iterator it = E[ s ]; it != E[ s ]; ++it ) {
-            if ( V[ *it ].distance <= V[ u ].distance + 1 ) {
+            if ( V[ *it ].distance == INF ) {
+                q.push( *it );
+            }
+            if ( V[ u ].distance + 1 <= V[ *it ].distance ) {
                 // < is first time visited; = is next
                 V[ *it ].distance = V[ u ].distance + 1;
                 V[ *it ].visited += V[ u ].visited;
             }
-            q.push( *it );
         }
     }
     printf( "%i\n", V[ t ].visited );
