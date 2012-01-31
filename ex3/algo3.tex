@@ -56,8 +56,112 @@
 \end{titlepage}
 
 \section*{Άσκηση 1}
+Για να ελέγξουμε αν ο γράφος είναι διμερής, χρωματίζουμε μία ακμή αυθαίρετα και στη συνέχεια για κάθε χρωματισμένη ακμή χρωματίζουμε τους γείτονές της με το αντίθετο χρώμα έως ότου ολοκληρωθεί η διαδικασία ή καταλήξουμε σε αντίφαση.
+
+\selectlanguage{english}
+\begin{algorithm}[H]
+\caption{\textgreek{Άσκηση 1}}
+\begin{algorithmic}[1]
+
+\Procedure{Bipartite}{$V, E$}
+    \For {$v \in V$}
+        \State $color[ v ] \gets \emptyset$
+    \EndFor
+    \State $q \gets \{ V[ 0 ] \}$
+    \State $color[ V[ 0 ] ] \gets \top$
+    \While {$q \neq \emptyset$}
+        \State $s \gets \textlatin{remove and return an element of q}$
+        \State $paint \gets \lnot color[ s ]$
+        \For {$\text{neighbour } t \text{ of } s$}
+            \If {$color[ t ] \neq \emptyset$}
+                \If {$color[ t ] \neq paint$}
+                    \State \Return $\bot$
+                \EndIf
+            \Else
+                \State $color[ t ] \gets paint$
+                \State $q \gets q \cup \{ t \}$
+            \EndIf
+        \EndFor
+    \EndWhile
+    \State \Return $\top$
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+\selectlanguage{greek}
+
 \section*{Άσκηση 2}
+\selectlanguage{english}
+\begin{algorithm}[H]
+\caption{\textgreek{Άσκηση 2}}
+\begin{algorithmic}[1]
+
+\Procedure{ShortestCount}{$V, E, s, t$}
+    \For {$v \in V$}
+        \State $visited[ v ] \gets 0$
+        \State $distance[ v ] \gets \infty$
+    \EndFor
+    \State $visited[ s ] \gets 1$
+    \State $distance[ s ] \gets 0$
+    \State $q \gets \Call{EmptyQueue}$
+    \State $\Call{Push}{q, s}$
+    \While{$\lnot \Call{Empty}{q}$}
+        \State $u \gets \Call{Pop}{q}$
+        \If{$u = t$}
+            \State \Return $visited[ t ]$
+        \EndIf
+        \For {$\text{neighbour } v \text{ of } u$}
+            \If {$distance[ v ] = \infty$}
+                \State $\Call{Push}{q, u}$
+            \EndIf
+            \If {$distance[ u ] + 1 \leq distance[ v ]$}
+                \State $distance[ v ] \gets distance[ u ] + 1$
+                \State $visited[ v ] \gets visited[ v ] + visited[ u ]$
+            \EndIf
+        \EndFor
+    \EndWhile
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+\selectlanguage{greek}
+
 \section*{Άσκηση 3}
+\subsection*{(α)}
+Ο γράφος της άσκησης 4 με $L = \{ C \}$ είναι ένα παράδειγμα γράφου που έχει διαφορετικό ΕΣΔ υπό περιορισμούς.
+
+\subsection*{(β)}
+\selectlanguage{english}
+\begin{algorithm}[H]
+\caption{\textgreek{Άσκηση 3}}
+\begin{algorithmic}[1]
+
+\Procedure{ConstraintedMST}{$V, E, L$}
+	\If {$|V| \leq 2$}
+	    \State \Return $E$
+	\EndIf
+    \For {$v \in V$}
+        \State $adj[ v ] \gets \emptyset$
+        \State $best[ v ] \gets \infty$
+    \EndFor
+    \For {$e = (u, v, w) \in E$}
+    	\If {$u \in L \oplus v \in L$}
+	    	\For {$s \in \{u, v\}$}
+		        \If {$s \in L$}
+    		        \If {$w < best[ s ]$}
+            		    \State $best[ s ] \gets w$
+        	    	    \State $adj[ s ] \gets \{ e \}$
+	    	        \EndIf
+    	        \EndIf
+        	\EndFor
+        \Else
+            \State $adj[ v ] \gets adj[ v ] \cup \{ e \}$
+        \EndIf
+    \EndFor
+    \State \Return $\Call{Prim}{V, adj}$
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+\selectlanguage{greek}
+
 \section*{Άσκηση 4}
 \subsection*{(α)}
 
@@ -67,9 +171,9 @@
 \begin{figure}[ht]
 	\centering
 		\begin{tikzpicture}
-			\Vertex[x=0,y=0,L=\ ]{1}
-			\Vertex[x=3,y=0,L=\ ]{2}
-			\Vertex[x=1.5,y=-2,L=\ ]{3}
+			\Vertex[x=0,y=0,L=A]{1}
+			\Vertex[x=3,y=0,L=B]{2}
+			\Vertex[x=1.5,y=-2,L=C]{3}
 
 			\Edge[label=2](1)(2)
 			\Edge[label=1](1)(3)
@@ -92,7 +196,7 @@
 Κάθε συνεκτικός μη κατευθυνόμενος ζυγισμένος γράφος στον οποίο για κάθε τομή η ακμή ελάχιστου βάρους που τη διασχίζει είναι μοναδική έχει μοναδικό ΕΣΔ.
 \end{lemma}
 \begin{proof}
-Έστω τέτοιος γράφος $G = (V, E, w)$ και δύο ΕΣΔ του, $Τ \subseteq E$ και $T' \subseteq E$,
+Έστω τέτοιος γράφος $G = (V, E, w)$ και δύο ΕΣΔ του, $T \subseteq E$ και $T' \subseteq E$,
 με $T \neq T'$ και $w(T) = w(T')$.
 
 Τότε, επειδή $T \neq T$, θα υπάρχει κάποια ακμή $e = (u, v)$ με $e \in T \land e \not\in T'$. Από το παραπάνω λήμμα, η $e$ θα είναι η ελάχιστη που διασχίζει κάποιο κόψιμο του $T$, έστω $S$.
