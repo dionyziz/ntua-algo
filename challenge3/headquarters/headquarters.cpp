@@ -2,60 +2,87 @@
 #include <cstdlib>
 #include <cstring>
 
+typedef unsigned long long int LL;
+
 using namespace std;
 
 int N;
 
-void multiply( int **result, int **a, int **b ) {
+void print( LL **result ) {
+    for ( int i = 0; i < N; ++i ) {
+        for ( int j = 0; j < N; ++j ) {
+            printf( "%lli\t", result[ i ][ j ] );
+        }
+        printf( "\n" );
+    }
+    printf( "\n" );
+}
+
+void multiply( LL **result, LL **a, LL **b ) {
     for ( int i = 0; i < N; ++i ) {
         for ( int j = 0; j < N; ++j ) {
             result[ i ][ j ] = 0;
             for ( int k = 0; k < N; ++k ) {
-                result[ i ][ j ] += a[ i ][ k ] + b[ k ][ j ];
+                result[ i ][ j ] += a[ i ][ k ] * b[ k ][ j ];
             }
+            result[ i ][ j ] = result[ i ][ j ] % 100000007;
         }
     }
 }
 
-void zero( int ***a ) {
-    *a = ( int** )malloc( N * sizeof( int* ) );
+void zero( LL ***a ) {
+    *a = ( LL** )malloc( N * sizeof( LL* ) );
     for ( int i = 0; i < N; ++i ) {
-        ( *a )[ i ] = ( int* )malloc( N * sizeof( int ) );
-        memset( ( *a )[ i ], 0, N * sizeof( int ) );
+        ( *a )[ i ] = ( LL* )malloc( N * sizeof( LL ) );
+        memset( ( *a )[ i ], 0, N * sizeof( LL ) );
     }
 }
 
-void swap( int **a, int **b ) {
-    int **t = a;
-    a = b;
-    b = t;
+void copy( LL **destination, LL **src ) {
+    for ( int i = 0; i < N; ++i ) {
+        for ( int j = 0; j < N; ++j ) {
+            destination[ i ][ j ] = src[ i ][ j ];
+        }
+    }
 }
 
-void power( int **result, int **base, int exponent ) {
-    int **temp;
+void swap( LL ***a, LL ***b ) {
+    LL **t = *a;
+    *a = *b;
+    *b = t;
+}
+
+void identity( LL **a ) {
+    for ( int i = 0; i < N; ++i ) {
+        for ( int j = 0; j < N; ++j ) {
+            a[ i ][ j ] = i == j;
+        }
+    }
+}
+
+void power( LL ***result, LL **base, long int exponent ) {
+    LL **temp;
 
     zero( &temp );
+    identity( *result );
 
-    while ( exponent > 1 ) {
-        if ( exponent % 2 == 0 ) {
-            exponent /= 2;
-            multiply( temp, result, result );
-            swap( result, temp );
+    while ( exponent ) {
+        if ( exponent & 1 ) {
+            multiply( temp, *result, base );
+            swap( result, &temp );
         }
-        else {
-            --exponent;
-            multiply( temp, base, result );
-            swap( result, temp );
-        }
+        multiply( temp, base, base );
+        swap( &base, &temp );
+        exponent >>= 1;
     }
 }
 
 int main() {
     int u, v, K, M, i, s, t, sum;
-    int **adjacency, **result;
+    LL **adjacency, **result;
 
     scanf( "%i %i %i %i %i", &K, &N, &M, &s, &t );
-    --s; --t;
+    --s; --t; --K;
 
     zero( &adjacency ); zero( &result );
 
@@ -65,9 +92,8 @@ int main() {
         adjacency[ u ][ v ] = 1;
     }
 
-    power( result, adjacency, K );
-    printf( "%i\n", result[ 0 ][ 0 ] );
-    printf( "%i\n", result[ s ][ t ] );
+    power( &result, adjacency, K );
+    printf( "%lli\n", result[ s ][ t ] );
 
     return 0;
 }
