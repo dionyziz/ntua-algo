@@ -1,5 +1,5 @@
 #include <cstdio>
-#include <vector>
+#include <cstdlib>
 #include <list>
 #include <queue>
 #include <cassert>
@@ -9,8 +9,10 @@
 
 using namespace std;
 
-const int UNVISITED = -1;
-const int INF = 987654321;
+typedef unsigned long long int LL;
+
+const int UNVISITED = 0;
+const LL INF = 900000000000;
 
 struct edge {
     int u;
@@ -25,8 +27,8 @@ bool operator <( edge e, edge f ) {
 int N;
 vector< list< edge > > E;
 vector< list< edge > > T;
-int W[ 2012 ][ 2012 ];
-bool MST[ 2012 ][ 2012 ];
+int** W;
+int* MSTParent;
 
 edge makeEdge( int u, int v, int w ) {
     edge ret;
@@ -42,9 +44,9 @@ void buildW() {
     int root, node, i, j;
     queue< int > frontier;
 
-    // printf( "W building in progress.\n" );
-
+    W = ( int** )malloc( N * sizeof( int* ) );
     for ( i = 0; i < N; ++i ) {
+        W[ i ] = ( int* )malloc( N * sizeof( int ) );
         for ( j = 0; j < N; ++j ) {
             W[ i ][ j ] = UNVISITED;
         }
@@ -65,27 +67,17 @@ void buildW() {
             }
         }
     }
-
-    // printf( "W array:\n" );
-    // for ( i = 0; i < N; ++i ) {
-    //     for ( j = 0; j < N; ++j ) {
-    //         printf( "%i\t", W[ i ][ j ] );
-    //     }
-    //     printf( "\n" );
-    // }
 }
 
-int secondBestMST() {
-    int i, diff = INF;
+LL secondBestMST() {
+    int i;
+    LL diff = INF;
 
-    // printf( "Second best hello.\n" );
     buildW();
 
     for ( i = 0; i < N; ++i ) {
         for ( list< edge >::iterator it = E[ i ].begin(); it != E[ i ].end(); ++it ) {
-            // printf( "Checking edge (%i, %i).\n", it->u, it->v );
-            if ( !MST[ it->u ][ it->v ] ) {
-                // printf( "Found an edge not in the MST.\n" );
+            if ( MSTParent[ it->u ] != it->v && MSTParent[ it->v ] != it->u ) {
                 diff = MIN( diff, it->w - W[ it->u ][ it->v ] );
             }
         }
@@ -94,23 +86,20 @@ int secondBestMST() {
     return diff;
 }
 
-int prim() {
-    bool visited[ N ];
+LL prim() {
     priority_queue< edge > q;
     edge e;
-    list< edge > l;
-    int i, j, cost;
+    int i, j;
+    LL cost;
 
-    // printf( "Prim hello.\n" );
+    MSTParent = ( int* )malloc( N * sizeof( int ) );
 
     for ( i = 0; i < N; ++i ) {
-        T.push_back( l );
-        for ( j = 0; j < N; ++j ) {
-            MST[ i ][ j ] = false;
-        }
+        T.push_back( list< edge >() );
+        MSTParent[ i ] = -1;
     }
 
-    visited[ 0 ] = true;
+    MSTParent[ 0 ] = 0;
     for ( list< edge >::iterator it = E[ 0 ].begin(); it != E[ 0 ].end(); ++it ) {
         q.push( *it );
     }
@@ -118,60 +107,40 @@ int prim() {
     while ( !q.empty() ) {
         e = q.top();
         q.pop();
-        if ( !visited[ e.v ] ) {
+        if ( MSTParent[ e.v ] == -1 ) {
             cost += e.w;
-            visited[ e.v ] = true;
             T[ e.u ].push_back( makeEdge( e.u, e.v, e.w ) );
             T[ e.v ].push_back( makeEdge( e.v, e.u, e.w ) );
-            MST[ e.u ][ e.v ] = true;
-            MST[ e.v ][ e.u ] = true;
+            MSTParent[ e.v ] = e.u;
             for ( list< edge >::iterator it = E[ e.v ].begin(); it != E[ e.v ].end(); ++it ) {
                 q.push( *it );
             }
         }
     }
 
-    // printf( "Prim MST = %i\n", cost );
-    // printf( "Here is the MST tree:\n" );
-
-    // for ( i = 0; i < N; ++i ) {
-    //     printf( "%i: ", i );
-    //     for ( list< edge >::iterator it = T[ i ].begin(); it != T[ i ].end(); ++it ) {
-    //         printf( "%i (%i)\t", it->v, it->w );
-    //     }
-    //     printf( "\n" );
-    // }
-    // printf( "\nAnd here are the marked edges:\n" );
-    // for ( i = 0; i < N; ++i ) {
-    //     for ( j = 0; j < N; ++j ) {
-    //         printf( "%i\t", MST[ i ][ j ] );
-    //     }
-    //     printf( "\n" );
-    // }
-
     return cost;
 }
 
-
 int main() {
-    int i, u, v, w, M, a, b;
-    list< edge > l;
+    int i, u, v, M;
+    int w;
+    LL a, b;
 
     scanf( "%i %i", &N, &M );
+
     for ( i = 0; i < N; ++i ) {
-        E.push_back( l );
+        E.push_back( list< edge >() );
     }
-    // printf( "Reading teh edges.\n" );
+    
     for ( i = 0; i < M; ++i ) {
         scanf( "%i %i %i", &u, &v, &w );
         --u; --v;
         E[ u ].push_back( makeEdge( u, v, w ) );
         E[ v ].push_back( makeEdge( v, u, w ) );
     }
-    // printf( "Read teh edges.\n" );
     a = prim();
     b = secondBestMST();
-    printf( "%i %i\n", a, a + b );
+    printf( "%lli %lli\n", a, a + b );
 
     return 0;
 }
